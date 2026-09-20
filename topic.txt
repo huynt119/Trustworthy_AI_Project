@@ -1,0 +1,13 @@
+4. Deep Leakage from Gradients: Reconstructing FL Data 
+
+Pillar: Security — Federated Learning privacy (§3.2.2) 
+
+The Problem: Federated learning claims "data never leaves the device" — but the gradient it sends can be inverted back into the original image. 
+
+Low-Resource Edge: Attack a single mini-batch on a small CNN; the whole demo is one optimization loop over a few images. 
+
+Methodology: Implement gradient inversion (DLG): given one client's gradient, solve min_x ||∇L(x,ŷ) − Δw||² by gradient descent on a dummy input. Reconstruct the client image, then show that adding DP-SGD gradient clipping + Gaussian noise (or gradient compression) degrades the reconstruction. 
+
+Dataset: MNIST / CIFAR-10 (single batch). 
+
+Source: Zhu et al., Deep Leakage from Gradients (2019); notes §3.2.2 (gradient inversion) + §3.1.3 (DP-SGD defense). 

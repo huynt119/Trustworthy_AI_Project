@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Datasets downloaded by the notebooks (CIFAR-10 is ~340 MB; part 2 sample images in
+# part2_resnet_inverting_gradients/data are small and stay tracked)
+part1_dlg_lenet/data/
+
+# Images written to the working directory by the Inverting Gradients notebook
+part2_resnet_inverting_gradients/*_ResNet18_*.png
+
+# Editor / OS / tooling
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+.claude/settings.local.json
