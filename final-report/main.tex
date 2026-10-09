@@ -1,0 +1,78 @@
+% !TEX program = xelatex
+% Compile with XeLaTeX (needs the fontspec package). On Windows with MiKTeX,
+% just run: xelatex main.tex   (twice, to resolve the table of contents and
+% any cross-references/citations).
+
+\documentclass[12pt,a4paper]{report}
+
+\usepackage{fontspec}
+\setmainfont{TeX Gyre Termes} % metric-compatible with Times New Roman, ships with
+                               % every standard TeX Live install (incl. Overleaf)
+
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{caption}
+\usepackage{booktabs}
+
+\title{\textbf{Gradient Inversion Attacks in Federated Learning}\\[6pt]
+\large Deep Leakage from Gradients: Reconstructing Client Data from Shared Updates}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\input{sections/introduction}
+
+% Further chapters (optimization-based attacks, the analytical R-GAP attack,
+% DP-SGD defense evaluation, conclusion) are added here incrementally:
+% \input{sections/related_work}
+% \input{sections/optimization_based_attacks}
+% \input{sections/analytical_attacks}
+% \input{sections/defense}
+% \input{sections/conclusion}
+
+\bibliographystyle{plain}
+\begin{thebibliography}{9}
+
+\bibitem{mcmahan2017fedavg}
+H.~B.~McMahan, E.~Moore, D.~Ramage, S.~Hampson, B.~Ag\"uera y Arcas.
+\textit{Communication-Efficient Learning of Deep Networks from Decentralized Data}.
+Proceedings of the 20th International Conference on Artificial Intelligence and Statistics (AISTATS 2017), PMLR 54, pp.~1273--1282.
+
+\bibitem{zhu2019dlg}
+L.~Zhu, Z.~Liu, S.~Han.
+\textit{Deep Leakage from Gradients}.
+Advances in Neural Information Processing Systems 32 (NeurIPS 2019), pp.~14747--14756.
+arXiv:1906.08935.
+
+\bibitem{zhao2020idlg}
+B.~Zhao, K.~R.~Mopuri, H.~Bilen.
+\textit{iDLG: Improved Deep Leakage from Gradients}.
+arXiv:2001.02610, 2020.
+
+\bibitem{geiping2020inverting}
+J.~Geiping, H.~Bauermeister, H.~Dr\"oge, M.~Moeller.
+\textit{Inverting Gradients --- How Easy Is It to Break Privacy in Federated Learning?}
+Advances in Neural Information Processing Systems 33 (NeurIPS 2020).
+
+\bibitem{zhu2021rgap}
+J.~Zhu, M.~B.~Blaschko.
+\textit{R-GAP: Recursive Gradient Attack on Privacy}.
+International Conference on Learning Representations (ICLR 2021). arXiv:2010.07733.
+
+\bibitem{abadi2016dpsgd}
+M.~Abadi, A.~Chu, I.~Goodfellow, H.~B.~McMahan, I.~Mironov, K.~Talwar, L.~Zhang.
+\textit{Deep Learning with Differential Privacy}.
+Proceedings of the 2016 ACM SIGSAC Conference on Computer and Communications Security (CCS 2016), pp.~308--318.
+arXiv:1607.00133.
+
+\end{thebibliography}
+
+\end{document}

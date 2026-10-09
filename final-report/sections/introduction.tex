@@ -1,0 +1,87 @@
+\chapter{Introduction}
+\label{chap:introduction}
+
+\section{Federated Learning}
+\label{sec:fl}
+
+Federated Learning (FL) is a distributed training setup where many clients
+(e.g.\ phones, hospitals, organizations) collaboratively train one shared
+model without pooling their data on a central server — each client trains
+locally on its own private data and only sends back the resulting model
+update~\cite{mcmahan2017fedavg}. Formally, FL trains a shared model across
+$K$ clients, where each client $k$ keeps a private dataset $\mathcal{D}_k$
+and the server optimizes the global objective
+\begin{equation}
+\min_{w} \; F(w) = \sum_{k=1}^{K} \frac{n_k}{n} \, F_k(w),
+\qquad
+F_k(w) = \frac{1}{n_k} \sum_{i \in \mathcal{D}_k} \ell(w; x_i, y_i),
+\label{eq:fl-objective}
+\end{equation}
+where $w$ are the shared parameters and $n_k = |\mathcal{D}_k|$, $n = \sum_k n_k$.
+In round $t$, the server sends $w_t$ to a subset of clients; each client
+trains locally and returns an update $\Delta w_k^{(t)}$ (or, in the
+single-step case this project focuses on, a gradient
+$g_k^{(t)} = \nabla_w F_k(w_t)$ scaled by the learning rate). The server
+aggregates with the FedAvg rule
+\begin{equation}
+w_{t+1} = w_t + \sum_{k \in S_t} \frac{n_k}{\sum_{j \in S_t} n_j} \, \Delta w_k^{(t)}.
+\label{eq:fedavg}
+\end{equation}
+Only $\Delta w_k^{(t)}$ (equivalently $g_k^{(t)}$) ever leaves the client —
+never $x_i$ or $y_i$ directly. This is the basis of FL's informal privacy
+claim, and the claim this project tests.
+
+\section{Threat Model: Gradient Inversion}
+\label{sec:threat-model}
+
+We consider an \emph{honest-but-curious} attacker that follows the FL
+protocol but tries to extract private data from what it legitimately
+observes — either the server itself, or an eavesdropper on the client-server
+channel. In both cases the attacker sees a gradient
+\begin{equation}
+g = \nabla_w \, \ell\big(w_t;\, x, y\big),
+\label{eq:leak}
+\end{equation}
+computed on a private sample $(x, y)$ through a known architecture.
+Since $g$ is a \emph{deterministic function} of $(x, y)$ and the known
+weights $w_t$, it is not necessarily one-way: if it can be inverted, exactly
+or by search, $(x, y)$ can be recovered from the gradient alone. This is the
+\emph{gradient inversion} attack, first shown as ``Deep Leakage from
+Gradients''~\cite{zhu2019dlg}. It demonstrates that exchanging gradients
+instead of raw data is not by itself a privacy guarantee — only a cost that
+depends on architecture, batch size, and whatever defense sits on top of the
+raw gradient.
+
+\section{Two Lines of Attack: Optimization versus Closed-Form Analysis}
+\label{sec:two-lines}
+
+Attacks that invert Equation~\eqref{eq:leak} fall into two families. This
+project implements and compares one method from each.
+
+\paragraph{Optimization-based.} Starting from a random dummy sample
+$(x', y')$, these attacks minimize the distance between its gradient and
+the leaked one,
+\begin{equation}
+\min_{x', y'} \; D\big(g', g\big), \qquad g' = \nabla_w \, \ell(w_t; x', y'),
+\label{eq:opt-attack}
+\end{equation}
+by gradient descent. DLG~\cite{zhu2019dlg} uses an $L_2$ distance and
+optimizes $x', y'$ jointly; iDLG~\cite{zhao2020idlg} recovers $y'$ in closed
+form instead, leaving only $x'$ to search. Inverting
+Gradients~\cite{geiping2020inverting} uses a cosine-similarity cost, a
+total-variation prior, and signed Adam, scaling the attack up to ResNet-18.
+This project implements DLG/iDLG on LeNet (Part~1) and Inverting Gradients
+on ResNet-18 (Part~2).
+
+\paragraph{Closed-form (analytical).} R-GAP~\cite{zhu2021rgap} skips search
+entirely: for a feed-forward network, the per-layer gradient equations let
+the input to each layer be solved recursively from the output layer back to
+the input, directly recovering $x$ by linear algebra rather than gradient
+descent. This makes it far faster than optimization-based attacks when it
+applies, but more brittle — sensitive to architecture (bias-free layers,
+invertible activations) and, as shown later, to floating-point precision,
+since each layer is a hard constraint rather than a soft loss term. This
+project implements R-GAP on a LeNet-style CNN and a fully-connected network
+(Part~3), and evaluates both attack families against a DP-SGD-style
+defense~\cite{abadi2016dpsgd} that clips and perturbs the gradient before
+it reaches the attacker.
