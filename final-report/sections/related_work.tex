@@ -1,0 +1,69 @@
+\chapter{Related Work}
+\label{chap:related-work}
+
+\section{Federated Learning}
+
+FedAvg~\cite{mcmahan2017fedavg} is the foundational FL algorithm and the
+training protocol assumed throughout this project: clients run several
+steps of local SGD on their own data and the server aggregates the
+resulting updates by a weighted average (Equation~\ref{eq:fedavg} in
+Chapter~\ref{chap:problem-statement}). Its privacy argument is informal -
+clients never transmit raw data, only model updates - and is exactly the
+assumption the gradient inversion literature below sets out to test.
+
+\section{Optimization-Based Gradient Inversion}
+
+\textbf{Deep Leakage from Gradients (DLG)}~\cite{zhu2019dlg} was the first
+to show that a single gradient can leak the private image and label that
+produced it. DLG treats reconstruction as an optimization problem: a dummy
+input and label are updated by gradient descent so that their gradient
+matches the leaked one under an $L_2$ distance, using second-order
+differentiation (``double backpropagation'') to backpropagate through the
+gradient-matching loss itself. Joint optimization of the dummy label
+alongside the image makes convergence slow and occasionally unstable.
+
+\textbf{iDLG}~\cite{zhao2020idlg} removes that instability by observing
+that, for cross-entropy loss on a one-hot label, the sign pattern of the
+last layer's gradient identifies the ground-truth class in closed form -
+only the dummy image still needs to be optimized. This simplification
+makes convergence markedly more reliable.
+
+\textbf{Inverting Gradients}~\cite{geiping2020inverting} argues that most
+of the information in a gradient is carried by its \emph{direction} rather
+than its magnitude, and replaces the $L_2$ distance with a
+cosine-similarity cost. It further adds a total-variation image prior and
+optimizes with a sign-based variant of Adam. These changes make the attack
+scale from small networks up to ImageNet-scale ResNet architectures,
+showing that gradient leakage is a practical threat even for deep
+convolutional networks trained with non-trivial batch sizes.
+
+\section{Closed-Form Gradient Inversion}
+
+\textbf{R-GAP (Recursive Gradient Attack on Privacy)}~\cite{zhu2021rgap}
+reformulates gradient leakage as a linear algebra problem rather than a
+search problem. For a feed-forward network with bias-free layers and
+invertible activations, the weight-gradient equation at each layer relates
+a known quantity (the leaked per-layer weight gradient) to the layer's
+input, which can be solved for directly; recursing this from the output
+layer back to the input recovers the private sample with no optimization
+loop. R-GAP additionally proposes a \emph{rank analysis} that predicts,
+from the architecture alone, whether a given layer's input is uniquely
+recoverable, without running the attack at all.
+
+\section{Defenses Against Gradient Inversion}
+
+\textbf{DP-SGD}~\cite{abadi2016dpsgd} was originally proposed to give
+differential-privacy guarantees during training, by clipping each
+per-example gradient to a norm $C$ and adding Gaussian noise with
+multiplier $\sigma$. The same clip-and-noise procedure is widely reused, as
+in this project, as an ad hoc empirical defense against gradient inversion:
+since it is applied directly to the gradient the attacker observes, it
+perturbs the attacker's input rather than any property of the model.
+
+\section{Positioning of This Project}
+
+This project contributes an empirical comparison, under matched conditions,
+of optimization-based attacks (DLG/iDLG, and separately Inverting
+Gradients) and a closed-form attack (R-GAP) across comparable victim
+architectures, together with an evaluation of how all three degrade under
+the same DP-SGD defense budget.

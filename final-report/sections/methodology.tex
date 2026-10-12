@@ -1,0 +1,153 @@
+\chapter{Methodology}
+\label{chap:methodology}
+
+\section{Victim Architectures}
+\label{sec:architectures}
+
+Three victim architectures are used across the attacks studied in this
+project:
+
+\begin{itemize}[leftmargin=1.6em]
+  \item \textbf{LeNet-style CNN} - four convolutional layers followed by a
+  fully-connected head. Two variants are used: the original DLG
+  formulation (bias, sigmoid activations), used for DLG/iDLG and, under
+  the same architecture, initial weights, and image, for Inverting
+  Gradients, providing a common architecture for the three-attack
+  comparison in Section~\ref{sec:dpsgd}; and a bias-free, LeakyReLU variant
+  required by R-GAP (referred to here as LeNetRGAP), since R-GAP's
+  per-layer equations (Section~\ref{sec:rgap}) assume an affine map with no
+  additive bias and an invertible activation; its output layer is a single
+  logit trained with binary logistic loss, since R-GAP's closed-form
+  output-layer inversion is only defined for a scalar, sigmoid-activated
+  loss.
+  \item \textbf{ResNet-18} - used for Inverting Gradients, to test attack
+  scalability on a deeper, residual architecture closer to what is
+  deployed in practice.
+  \item \textbf{FCN3} - a three-layer, bias-free, fully-connected network
+  (1000, 100, 1 units, LeakyReLU throughout), used alongside LeNetRGAP for
+  R-GAP as a point of comparison: it has no
+  convolutional layers, and therefore no extra forward-pass constraints
+  beyond the per-layer gradient equations themselves (Section~\ref{sec:rgap}).
+\end{itemize}
+
+\section{DLG and iDLG}
+\label{sec:dlg}
+
+DLG~\cite{zhu2019dlg} initializes a dummy sample $(\hat{x}, \hat{y})$ from
+random noise and optimizes
+\begin{equation}
+\min_{\hat{x}, \hat{y}} \; \big\lVert g' - g \big\rVert_2^2,
+\qquad g' = \nabla_w \, \ell(w_t; \hat{x}, \hat{y}),
+\label{eq:dlg-objective}
+\end{equation}
+by gradient descent on $(\hat{x}, \hat{y})$ jointly. Because $g'$ is itself
+a gradient, minimizing Equation~\eqref{eq:dlg-objective} requires
+differentiating through $\nabla_w \ell$ a second time (``double
+backpropagation''); both $\hat{x}$ and $\hat{y}$ are free, continuous
+optimization variables, including the label, which DLG only relaxes to a
+one-hot vector after optimization.
+
+iDLG~\cite{zhao2020idlg} removes the label from the optimization. For
+cross-entropy loss on a one-hot label $y$, the gradient of the loss with
+respect to the pre-softmax logit $z_c$ of class $c$ is $\partial \ell/\partial z_c = p_c - \mathbb{1}[c = y]$,
+where $p_c$ is the predicted probability. Since $p_c \in (0,1)$, this
+quantity is negative only for the true class, so
+\begin{equation}
+\hat{y} = \arg\min_{c} \; \left(\frac{\partial \ell}{\partial z_c}\right),
+\label{eq:idlg-label}
+\end{equation}
+recovers the ground-truth label in closed form from the sign pattern of the
+last layer's gradient alone. Only $\hat{x}$ is then optimized against
+Equation~\eqref{eq:dlg-objective}, which converges markedly faster and more
+reliably than DLG's joint optimization.
+
+\section{Inverting Gradients}
+\label{sec:inverting-gradients}
+
+Inverting Gradients~\cite{geiping2020inverting} replaces the $L_2$ distance
+with a cosine-similarity cost and adds a total-variation image prior:
+\begin{equation}
+\min_{\hat{x}} \; \left(1 - \frac{\langle g', g \rangle}{\lVert g' \rVert \, \lVert g \rVert}\right)
++ \alpha \, \mathrm{TV}(\hat{x}), \qquad g' = \nabla_w \, \ell(w_t; \hat{x}, y),
+\label{eq:ig-objective}
+\end{equation}
+where $\mathrm{TV}(\hat{x}) = \sum_{i,j} |\hat{x}_{i+1,j} - \hat{x}_{i,j}| + |\hat{x}_{i,j+1} - \hat{x}_{i,j}|$
+is the total variation of the image - the sum of absolute differences
+between horizontally and vertically neighboring pixels - which penalizes
+non-smooth reconstructions. The label $y$ is recovered the same way as in
+iDLG (Equation~\eqref{eq:idlg-label}), and $\hat{x}$ is constrained to the
+valid image range $[0,1]^d$ by a box constraint. Two choices make
+Equation~\eqref{eq:ig-objective} scale to deep networks where DLG's $L_2$
+cost does not: the cosine-similarity term depends only on the
+\emph{direction} of $g'$, not its magnitude, which is otherwise dominated
+by whichever layer happens to have the largest gradient norm; and the
+optimizer applies Adam updates using only the \emph{sign} of the computed
+gradient, which prevents any single coordinate's magnitude from
+controlling the step size. This project evaluates Equation~\eqref{eq:ig-objective}
+on an untrained ResNet-18 victim model, and separately on the LeNet
+architecture of Section~\ref{sec:architectures}, under the same weights
+and image used for DLG/iDLG; the latter configuration is the one used in
+the defense comparison of Section~\ref{sec:dpsgd}.
+
+\section{R-GAP}
+\label{sec:rgap}
+
+R-GAP~\cite{zhu2021rgap} targets a feed-forward network of $L$ bias-free
+layers with invertible elementwise activation $\sigma$: writing $a_0 = x$
+for the input and, for $l = 1, \dots, L$,
+\begin{equation}
+z_l = W_l \, a_{l-1}, \qquad a_l = \sigma(z_l),
+\label{eq:rgap-forward}
+\end{equation}
+the weight gradient at layer $l$ for a single sample ($B=1$) is the outer
+product
+\begin{equation}
+\frac{\partial \ell}{\partial W_l} = \frac{\partial \ell}{\partial z_l} \, a_{l-1}^{\top}.
+\label{eq:rgap-weight-grad}
+\end{equation}
+The leaked gradient $\partial \ell / \partial W_l$ is known for every
+layer; $\partial \ell/\partial z_l$ is obtained recursively via the chain
+rule, $\partial \ell/\partial z_l = \sigma'(z_l) \odot \big(W_{l+1}^{\top} \, \partial \ell/\partial z_{l+1}\big)$,
+starting from the output layer, where $\partial \ell/\partial z_L$ is a
+scalar equation solved numerically (the loss-to-logit derivative is a
+monotonic function of the scalar logit for the binary logistic loss used
+here). With $\partial \ell/\partial z_l$ known, Equation~\eqref{eq:rgap-weight-grad}
+becomes a linear system for the unknown $a_{l-1}$, solved by least squares;
+recursing this from $l = L$ down to $l = 1$ recovers $a_0 = x$ - the
+private input itself - with \emph{no} optimization loop: each layer's
+equation is solved exactly, subject to its own rank/invertibility
+condition. Convolutional layers are handled by first re-expressing the
+weight-sharing convolution as an equivalent dense (circulant) matrix
+multiplication, so that Equation~\eqref{eq:rgap-weight-grad} applies
+unchanged.
+
+This project implements R-GAP on both victim architectures from
+Section~\ref{sec:architectures} (LeNetRGAP and FCN3), and additionally runs
+the entire forward/backward pass and every linear solve in float64 rather
+than the default float32: because each layer's solution is an exact linear
+system rather than one term in an averaged loss, small floating-point
+rounding error does not cancel out as it would under gradient descent, and
+is instead compounded across the $L$ recursive layers.
+
+\section{DP-SGD as a Defense}
+\label{sec:dpsgd}
+
+DP-SGD~\cite{abadi2016dpsgd} is applied here, after the fact, as a
+gradient-perturbation defense: before the leaked gradient $g$ reaches the
+attacker, it is clipped to a global $L_2$ norm $C$ and perturbed with
+Gaussian noise of multiplier $\sigma$,
+\begin{equation}
+\tilde{g} = \mathrm{clip}(g, C) + \mathcal{N}\!\big(0,\, (\sigma C)^2 I\big),
+\qquad
+\mathrm{clip}(g, C) = g \cdot \min\!\left(1, \frac{C}{\lVert g \rVert_2}\right).
+\label{eq:dpsgd}
+\end{equation}
+The same perturbed gradient $\tilde{g}$ is substituted wherever $g$ appears
+in Equations~\eqref{eq:dlg-objective}, \eqref{eq:ig-objective}, and the
+R-GAP recursion of Section~\ref{sec:rgap}, allowing the three attacks to
+be compared under an identical defense budget $(C, \sigma)$. Inverting
+Gradients is evaluated under both victim configurations introduced in
+Section~\ref{sec:inverting-gradients}: the ResNet-18 setup, and the LeNet
+architecture shared with DLG/iDLG. This project sweeps $(C, \sigma)$ for
+each attack and configuration; the resulting reconstruction quality is
+reported in Chapter 5.

@@ -1,0 +1,88 @@
+\chapter{Problem Statement}
+\label{chap:problem-statement}
+
+\section{Federated Learning Setting}
+\label{sec:fl-setting}
+
+FL trains a shared model across $K$ clients, where client $k$ keeps a
+private dataset $\mathcal{D}_k$ and the server optimizes the global
+objective
+\begin{equation}
+\min_{w} \; F(w) = \sum_{k=1}^{K} \frac{n_k}{n} \, F_k(w),
+\qquad
+F_k(w) = \frac{1}{n_k} \sum_{i \in \mathcal{D}_k} \ell(w; x_i, y_i),
+\label{eq:fl-objective}
+\end{equation}
+where $w$ are the shared parameters and $n_k = |\mathcal{D}_k|$, $n = \sum_k n_k$.
+In round $t$, the server sends $w_t$ to a subset of clients; each client
+trains locally and returns an update $\Delta w_k^{(t)}$ (or, in the
+single-step case this project focuses on, a gradient
+$g_k^{(t)} = \nabla_w F_k(w_t)$ scaled by the learning rate). The server
+aggregates with the FedAvg rule
+\begin{equation}
+w_{t+1} = w_t + \sum_{k \in S_t} \frac{n_k}{\sum_{j \in S_t} n_j} \, \Delta w_k^{(t)}.
+\label{eq:fedavg}
+\end{equation}
+Only $\Delta w_k^{(t)}$ (equivalently $g_k^{(t)}$) ever leaves the client -
+never $x_i$ or $y_i$ directly.
+
+\section{Threat Model}
+\label{sec:threat-model}
+
+We consider an \emph{honest-but-curious} attacker: it follows the FL
+protocol exactly as specified, but additionally tries to extract private
+data from whatever it legitimately observes. Two placements are relevant,
+and both reduce to the same observation:
+
+\begin{itemize}[leftmargin=1.6em]
+  \item \textbf{A curious server}, which by design receives every client's
+  update $\Delta w_k^{(t)}$ (or gradient $g_k^{(t)}$) each round.
+  \item \textbf{An eavesdropper} on the client--server channel, which
+  intercepts the same quantity in transit.
+\end{itemize}
+
+\textbf{What the attacker knows:} the model architecture and loss function
+$\ell(\cdot\,;\cdot)$, the current global weights $w_t$, and the leaked
+gradient (or update) itself. \textbf{What the attacker does not know:} the
+private batch $\{(x_i, y_i)\}$ that produced that gradient. The attacker
+makes no other assumption and does not deviate from the protocol - it is
+purely a passive observer of data every FL deployment already produces.
+
+\section{The Gradient Inversion Problem}
+\label{sec:gi-problem}
+
+Formally, for a private batch of size $B$,
+\begin{equation}
+g = \nabla_w \, \ell\big(w_t;\, \{x_i, y_i\}_{i=1}^{B}\big)
+\label{eq:leak}
+\end{equation}
+is the quantity the attacker observes (for $B=1$ this is simply
+$\nabla_w \ell(w_t; x, y)$). Equation~\eqref{eq:leak} is a deterministic
+function of the private batch and the known weights $w_t$; it is not
+necessarily one-way. The \textbf{gradient inversion problem} is to invert
+it:
+
+\begin{quote}
+\textbf{Input:} the model architecture and loss $\ell$, the weights $w_t$,
+and the leaked gradient $g$. \\
+\textbf{Output:} an estimate $\{(\hat{x}_i, \hat{y}_i)\}_{i=1}^{B}$ of the
+private batch.
+\end{quote}
+
+The two attack families surveyed in Chapter~\ref{chap:related-work} answer
+this input/output contract differently. Optimization-based attacks pose it
+as a search problem,
+\begin{equation}
+\min_{\hat{x}, \hat{y}} \; D\big(g', g\big), \qquad g' = \nabla_w \, \ell(w_t; \hat{x}, \hat{y}),
+\label{eq:opt-attack}
+\end{equation}
+for some distance or similarity measure $D(\cdot,\cdot)$ between gradient
+vectors, solved by gradient descent on $(\hat{x}, \hat{y})$. Closed-form
+attacks instead treat Equation~\eqref{eq:leak} as a system of per-layer
+equations and solve directly for $\{\hat{x}_i\}$ by linear algebra, with no
+search and no loss $D$ to minimize. Chapter~\ref{chap:methodology} details
+both routes for each method implemented in this project. How the quality
+of $(\hat{x}, \hat{y})$ is measured against the true $(x, y)$ - and under
+what gradient-perturbation defense budget - is defined separately in
+Chapter~\ref{chap:experiment}, since it is a property of the evaluation, not of the problem
+statement itself.
