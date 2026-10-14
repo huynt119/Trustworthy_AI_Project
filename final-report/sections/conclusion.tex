@@ -7,11 +7,16 @@ attacks against Federated Learning's informal privacy claim --- optimization-bas
 controlled comparisons spanning architecture, scale, batch size, and a
 DP-SGD defense (Chapter~\ref{chap:experiment}).
 
-\begin{quote}
-\textit{[Pending final data --- a concise summary of the main quantitative
-conclusions across RQ1--RQ4 will be written here once the results are
-reviewed.]}
-\end{quote}
+Across all four comparisons, a leaked gradient proved sufficient to
+reconstruct private data under both attack families, confirming that the
+privacy claim does not hold in general. The two families fail in
+different ways: the closed-form attack is exact and fast but brittle,
+degrading sharply under batch size and under noise, while the
+optimization-based attacks are slower and less precise but degrade more
+gracefully under the same conditions. Scaling to a deeper architecture is
+only tractable for the optimization-based family, and at a cost in
+fidelity. No single defense configuration protects against both families
+equally; its effectiveness depends on which attack is actually in play.
 
 Two extensions follow directly from this comparison. Pairing the
 attack-side measurements of Section~\ref{sec:dpsgd} with a training-side
