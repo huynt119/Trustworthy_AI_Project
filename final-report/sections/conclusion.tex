@@ -1,0 +1,23 @@
+\chapter{Conclusion}
+\label{chap:conclusion}
+
+This project implemented and compared two families of gradient inversion
+attacks against Federated Learning's informal privacy claim --- optimization-based
+(DLG, iDLG, Inverting Gradients) and closed-form (R-GAP) --- under four
+controlled comparisons spanning architecture, scale, batch size, and a
+DP-SGD defense (Chapter~\ref{chap:experiment}).
+
+\begin{quote}
+\textit{[Pending final data --- a concise summary of the main quantitative
+conclusions across RQ1--RQ4 will be written here once the results are
+reviewed.]}
+\end{quote}
+
+Two extensions follow directly from this comparison. Pairing the
+attack-side measurements of Section~\ref{sec:dpsgd} with a training-side
+utility measurement would show whether a noise level sufficient to defeat
+these attacks is one a real deployment could afford. Separately, R-GAP's
+own rank-analysis framework (Section~\ref{sec:rgap}) could be used to
+predict, for architectures not tested here (deeper convolutional networks,
+BatchNorm, ReLU), whether a closed-form attack is even theoretically
+possible before porting the attack itself.

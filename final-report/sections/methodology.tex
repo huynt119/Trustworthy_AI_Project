@@ -13,9 +13,9 @@ project:
   formulation (bias, sigmoid activations), used for DLG/iDLG and, under
   the same architecture, initial weights, and image, for Inverting
   Gradients, providing a common architecture for the three-attack
-  comparison in Section~\ref{sec:dpsgd}; and a bias-free, LeakyReLU variant
+  comparison later in this chapter; and a bias-free, LeakyReLU variant
   required by R-GAP (referred to here as LeNetRGAP), since R-GAP's
-  per-layer equations (Section~\ref{sec:rgap}) assume an affine map with no
+  per-layer equations assume an affine map with no
   additive bias and an invertible activation; its output layer is a single
   logit trained with binary logistic loss, since R-GAP's closed-form
   output-layer inversion is only defined for a scalar, sigmoid-activated
@@ -27,7 +27,7 @@ project:
   (1000, 100, 1 units, LeakyReLU throughout), used alongside LeNetRGAP for
   R-GAP as a point of comparison: it has no
   convolutional layers, and therefore no extra forward-pass constraints
-  beyond the per-layer gradient equations themselves (Section~\ref{sec:rgap}).
+  beyond the per-layer gradient equations themselves.
 \end{itemize}
 
 \section{DLG and iDLG}
@@ -84,10 +84,10 @@ by whichever layer happens to have the largest gradient norm; and the
 optimizer applies Adam updates using only the \emph{sign} of the computed
 gradient, which prevents any single coordinate's magnitude from
 controlling the step size. This project evaluates Equation~\eqref{eq:ig-objective}
-on an untrained ResNet-18 victim model, and separately on the LeNet
-architecture of Section~\ref{sec:architectures}, under the same weights
+on an untrained ResNet-18 victim model, and separately on the shared LeNet
+architecture described above, under the same weights
 and image used for DLG/iDLG; the latter configuration is the one used in
-the defense comparison of Section~\ref{sec:dpsgd}.
+the defense comparison later in this chapter.
 
 \section{R-GAP}
 \label{sec:rgap}
@@ -121,13 +121,8 @@ weight-sharing convolution as an equivalent dense (circulant) matrix
 multiplication, so that Equation~\eqref{eq:rgap-weight-grad} applies
 unchanged.
 
-This project implements R-GAP on both victim architectures from
-Section~\ref{sec:architectures} (LeNetRGAP and FCN3), and additionally runs
-the entire forward/backward pass and every linear solve in float64 rather
-than the default float32: because each layer's solution is an exact linear
-system rather than one term in an averaged loss, small floating-point
-rounding error does not cancel out as it would under gradient descent, and
-is instead compounded across the $L$ recursive layers.
+This project implements R-GAP on both victim architectures described above
+(LeNetRGAP and FCN3).
 
 \section{DP-SGD as a Defense}
 \label{sec:dpsgd}
@@ -144,10 +139,10 @@ Gaussian noise of multiplier $\sigma$,
 \end{equation}
 The same perturbed gradient $\tilde{g}$ is substituted wherever $g$ appears
 in Equations~\eqref{eq:dlg-objective}, \eqref{eq:ig-objective}, and the
-R-GAP recursion of Section~\ref{sec:rgap}, allowing the three attacks to
+R-GAP recursion above, allowing the three attacks to
 be compared under an identical defense budget $(C, \sigma)$. Inverting
-Gradients is evaluated under both victim configurations introduced in
-Section~\ref{sec:inverting-gradients}: the ResNet-18 setup, and the LeNet
+Gradients is evaluated under both victim configurations introduced above:
+the ResNet-18 setup, and the LeNet
 architecture shared with DLG/iDLG. This project sweeps $(C, \sigma)$ for
 each attack and configuration; the resulting reconstruction quality is
-reported in Chapter 5.
+reported in Section~\ref{sec:rq4}.
