@@ -21,6 +21,16 @@ part2_resnet_inverting_gradients/*_ResNet18_*.png
 *.out
 *.toc
 *.synctex.gz
+*.nav
+*.snm
+
+# Raw numpy arrays exported by the notebooks for figure building (regenerate by
+# re-running the notebooks, then slides/scripts that build final-report/figures)
+final-report/raw/
+
+# Progress-report draft, not part of the final deliverable
+/bao_cao_tien_do.*
+/figures/
 
 # Editor / OS / tooling
 .vscode/
