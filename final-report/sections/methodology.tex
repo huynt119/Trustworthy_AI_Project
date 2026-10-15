@@ -127,10 +127,13 @@ This project implements R-GAP on both victim architectures described above
 \section{DP-SGD as a Defense}
 \label{sec:dpsgd}
 
-DP-SGD~\cite{abadi2016dpsgd} is applied here, after the fact, as a
-gradient-perturbation defense: before the leaked gradient $g$ reaches the
-attacker, it is clipped to a global $L_2$ norm $C$ and perturbed with
-Gaussian noise of multiplier $\sigma$,
+DP-SGD~\cite{abadi2016dpsgd} clips and adds noise to \emph{per-example}
+gradients, accumulated across training to give a formal differential-privacy
+guarantee. This project reuses only its clip-and-noise mechanics, applied
+once to the single, already-aggregated gradient $g$ an attacker in this
+threat model observes, with no per-example accounting and no formal privacy
+guarantee attached (Section~\ref{sec:related-defenses}); the clipping
+threshold is a global $L_2$ norm $C$, and the noise multiplier is $\sigma$,
 \begin{equation}
 \tilde{g} = \mathrm{clip}(g, C) + \mathcal{N}\!\big(0,\, (\sigma C)^2 I\big),
 \qquad

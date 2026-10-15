@@ -5,8 +5,9 @@
 \label{sec:eval-objectives}
 
 The methods described in Chapter~\ref{chap:methodology} are evaluated to answer four
-questions, each changing exactly one factor relative to a shared anchor configuration
-(LeNet, CIFAR-10, batch size 1, no defense):
+questions, each primarily varying one factor relative to a shared anchor configuration
+(LeNet, CIFAR-10, batch size 1, no defense); where a method's own requirements force an
+additional change, this is noted in that RQ's own discussion below:
 
 \begin{enumerate}[leftmargin=1.6em]
   \item \textbf{RQ1.} Under a matched architecture, dataset, and batch size, how do an
@@ -70,7 +71,12 @@ the ground-truth image $x$:
 \end{equation}
 Higher PSNR (equivalently, lower MSE) indicates a reconstruction closer to the
 original image; a PSNR near or below $0$~dB indicates the reconstruction is no more
-informative than noise. Two secondary metrics are used where applicable: \textbf{label
+informative than noise. The ground truth $x$ is always in $[0,1]$, but the
+reconstruction $\hat{x}$ is not clamped to that range before these metrics are
+computed: under a failed or diverged attack (most visibly in the DP-SGD sweeps of
+RQ4), $\hat{x}$ can fall far outside $[0,1]$, which is what produces PSNR values far
+below $0$~dB rather than a bounded worst case. Two secondary metrics are used where
+applicable: \textbf{label
 accuracy} (whether the attacker's recovered label matches the ground-truth label,
 relevant to DLG/iDLG and Inverting Gradients, which recover a label as part of the
 attack) and \textbf{gradient cosine similarity} between the defended and original
@@ -88,8 +94,12 @@ DLG (Equation~\eqref{eq:dlg-objective}), iDLG, Inverting Gradients
 are each run once on the shared LeNet configuration of Table~\ref{tab:eval-setup}
 (the LeNetRGAP variant for R-GAP), batch size 1, no defense: the same
 dataset, the same image, and the same convolutional topology for all four
-attacks, with one exception --- the bias/activation difference that
-R-GAP's closed-form derivation requires (Section~\ref{sec:architectures}).
+attacks. R-GAP's closed-form derivation forces two further changes beyond
+this shared setup: the bias/activation difference of LeNetRGAP, and a
+single-logit, binary-logistic output layer in place of the 10-way
+cross-entropy classification task that DLG/iDLG and Inverting Gradients
+attack (Section~\ref{sec:architectures}); R-GAP is therefore compared
+under a matched architecture and image, but not a fully identical task.
 The comparison reports reconstruction quality (MSE, PSNR) for each method.
 
 \begin{table}[h]
@@ -166,15 +176,19 @@ right) in float64 vs.\ float32. The two agree until the last step.}
 \label{sec:rq2}
 
 Inverting Gradients (Equation~\eqref{eq:ig-objective}) is run on an untrained
-ResNet-18, 11.7M-parameter victim model and a $224\times224$ image, a setting an
-order of magnitude larger than the LeNet configuration of RQ1. Section~\ref{sec:inverting-gradients}
-already explains, at the level of the optimization objective, why the cosine cost and
-sign-based gradient update were introduced specifically to make this scale tractable; this
-section reports whether that design succeeds in practice, by the same MSE/PSNR
+ResNet-18, 11.7M-parameter victim model, on an ImageNet sample image at
+$224\times224$ resolution: a change of architecture, dataset, and image
+resolution together from RQ1's LeNet/CIFAR-10 setting, since a meaningful
+test of ResNet-18 requires input at the scale it is actually deployed at,
+an order of magnitude larger than RQ1's LeNet configuration.
+Section~\ref{sec:inverting-gradients} already explains, at the level of the
+optimization objective, why the cosine cost and sign-based gradient update
+were introduced specifically to make this scale tractable; this section
+reports whether that design succeeds in practice, by the same MSE/PSNR
 metrics as RQ1.
 
 With 4 random restarts of 24{,}000 iterations each, the attack reaches
-MSE $=0.2944$, PSNR $=17.33$~dB. Figure~\ref{fig:rq2}
+MSE $=0.0185$, PSNR $=17.33$~dB. Figure~\ref{fig:rq2}
 shows the reconstruction is visibly identifiable (pose, fur color, collar
 pattern) despite the much larger parameter count and image resolution than
 RQ1's LeNet setting, confirming that the cosine cost and sign-based gradient update
@@ -193,8 +207,9 @@ smaller LeNet (PSNR 26.48~dB; Section~\ref{sec:rq1}).
 \label{sec:rq3}
 
 Each attack is compared against its own batch-size-1 result when the leaked gradient
-instead averages two private images: DLG/iDLG, Inverting Gradients (on both of its
-victim configurations), and R-GAP. R-GAP is evaluated on both victim architectures
+instead averages two private images: DLG/iDLG, Inverting Gradients (on its ResNet-18
+configuration only; the shared-LeNet configuration is not swept at batch size 2), and
+R-GAP. R-GAP is evaluated on both victim architectures
 from Table~\ref{tab:eval-setup}, since Section~\ref{sec:rgap} already
 identifies a specific, architecture-dependent
 reason batch size might affect it differently from the optimization-based attacks:
@@ -236,16 +251,25 @@ identifiable.
 \paragraph{R-GAP at batch size 2: the linear-combination property.}
 With $B=2$, the leaked weight gradient is an average over both images, and
 Equation~\eqref{eq:rgap-weight-grad} no longer uniquely determines either
-input on its own. For a purely linear (bias-free, fully-connected)
-network, the recursive solution R-GAP recovers is exactly the \emph{average}
-of the two inputs, $\tfrac{1}{2}(x_A + x_B)$ -- a direct algebraic
-consequence of Equation~\eqref{eq:rgap-weight-grad} being linear in the
-input. A convolutional architecture adds the extra forward-pass
-constraints of Equation~\eqref{eq:rgap-forward} at every layer, which the
-blended, two-image gradient signal does not consistently satisfy. Table~\ref{tab:rq3-rgap}
-confirms this: on FCN3, R-GAP's final-stage output matches the plain pixel
-average almost exactly; on LeNetRGAP (CNN), it matches neither individual
-image nor their average.
+input on its own. On a network with no convolutional layers (FCN3), each
+layer's recovered input comes only from inverting the weight-gradient
+equation~\eqref{eq:rgap-weight-grad} (linear in that layer's input) and,
+exactly, that layer's own invertible activation, so the recursive solution
+R-GAP recovers is the \emph{average} of the two inputs,
+$\tfrac{1}{2}(x_A + x_B)$ -- regardless of FCN3's LeakyReLU nonlinearity,
+since R-GAP inverts it exactly at every layer rather than assuming it away.
+A convolutional architecture adds the extra forward-pass constraints of
+Equation~\eqref{eq:rgap-forward} at every layer, which the blended,
+two-image gradient signal does not consistently satisfy -- so the property
+fails not because of nonlinearity, but because a convolution imposes a
+constraint beyond the weight-gradient equation alone. Table~\ref{tab:rq3-rgap}
+confirms this: on FCN3, R-GAP's final-stage output is highly correlated
+with the plain pixel average in \emph{direction}; this batch-2 solve does
+not separately fix the overall sign and scale of its solution (unlike the
+batch-1 case, where the recovered image matched the ground truth exactly),
+so cosine similarity establishes agreement in direction rather than in
+absolute pixel value. On LeNetRGAP (CNN), it is uncorrelated with either
+individual image or their average.
 
 \begin{table}[h]
 \centering
@@ -254,7 +278,7 @@ image nor their average.
 Architecture & $|\cos|$ vs.\ image A & $|\cos|$ vs.\ image B & $|\cos|$ vs.\ average $(A{+}B)/2$ \\
 \midrule
 LeNetRGAP (CNN) & 0.062 & 0.055 & 0.061 \\
-FCN3 (linear only) & 0.959 & 0.967 & 1.000 \\
+FCN3 (fully-connected, LeakyReLU) & 0.959 & 0.967 & 1.000 \\
 \bottomrule
 \end{tabular}
 \caption{R-GAP batch-2 final-stage reconstruction, cosine similarity against ground truth.}
@@ -266,7 +290,8 @@ FCN3 (linear only) & 0.959 & 0.967 & 1.000 \\
 \includegraphics[width=0.85\textwidth]{figures/rq3_rgap_cnn_batch2.png}\\[0.5em]
 \includegraphics[width=0.85\textwidth]{figures/rq3_rgap_fcn3_batch2.png}
 \caption{R-GAP batch-2 reconstruction: LeNetRGAP/CNN (top, matches neither image nor
-their average) vs.\ FCN3 (bottom, recovers almost exactly the pixel average $(A{+}B)/2$).}
+their average) vs.\ FCN3 (bottom, closely matches the direction of the pixel average
+$(A{+}B)/2$).}
 \label{fig:rq3-rgap}
 \end{figure}
 
@@ -279,8 +304,10 @@ attack shows going from batch 1 to batch 2.
 \subsection{RQ4 -- Effectiveness of the DP-SGD Defense}
 \label{sec:rq4}
 
-The DP-SGD defense of Equation~\eqref{eq:dpsgd} is applied to the leaked gradient
-before each attack ever observes it, sweeping clipping thresholds $C = 0.5\lVert
+The DP-SGD-style defense of Equation~\eqref{eq:dpsgd} -- clip-and-noise applied once to
+the already-aggregated gradient, not the per-example, training-integrated mechanism of
+\cite{abadi2016dpsgd} itself (Section~\ref{sec:dpsgd}) -- is applied to the leaked
+gradient before each attack ever observes it, sweeping clipping thresholds $C = 0.5\lVert
 g\rVert$ and $C = 1.0\lVert g\rVert$ (half the gradient's own norm, and the exact
 boundary at which clipping has no effect) together with a grid of noise multipliers
 $\sigma$. Thresholds are set relative to each configuration's own gradient norm so
