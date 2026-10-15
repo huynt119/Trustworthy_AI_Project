@@ -47,8 +47,8 @@ Bilingual (EN/VI) speaking notes, one entry per slide, in the same order as `sli
 **VI:** Với những tấn công này, phía phòng thủ có thể làm gì? Hãy xem xét DP-SGD.
 
 ## Slide 12: DP-SGD as a Post-Hoc Defense
-**EN:** DP-SGD is applied here after the fact, directly to the leaked gradient: clip it to a norm C, then add Gaussian noise scaled by sigma. This happens before the attacker ever sees the gradient, and we sweep the same (C, sigma) budget across every attack so the comparison is fair.
-**VI:** Ở đây DP-SGD được áp dụng sau cùng, trực tiếp lên gradient bị lộ: cắt (clip) nó về một ngưỡng chuẩn C, rồi cộng thêm nhiễu Gaussian với hệ số sigma. Việc này xảy ra trước khi kẻ tấn công kịp nhìn thấy gradient, và bọn em quét cùng một ngân sách (C, sigma) cho tất cả các tấn công để việc so sánh công bằng.
+**EN:** We reuse DP-SGD's clip-and-noise mechanics here, but applied once to the single, already-aggregated gradient the attacker sees -- not the per-example, training-integrated version that gives DP-SGD its formal privacy guarantee. Clip it to a norm C, then add Gaussian noise scaled by sigma, before the attacker ever sees the gradient, and we sweep the same (C, sigma) budget across every attack so the comparison is fair.
+**VI:** Ở đây bọn em chỉ tái sử dụng cơ chế clip-and-noise của DP-SGD, áp dụng một lần lên đúng một gradient đã được gộp mà kẻ tấn công quan sát được -- không phải phiên bản per-example, tích hợp vào quá trình huấn luyện, vốn mới là thứ mang lại bảo đảm differential privacy chính thức của DP-SGD. Cắt (clip) nó về một ngưỡng chuẩn C, rồi cộng thêm nhiễu Gaussian với hệ số sigma, trước khi kẻ tấn công kịp nhìn thấy gradient, và bọn em quét cùng một ngân sách (C, sigma) cho tất cả các tấn công để việc so sánh công bằng.
 
 ## Slide 13: Outline (Experimental Evaluation section)
 **EN:** Now let's see how all of this plays out experimentally, across four research questions.
@@ -87,8 +87,8 @@ Bilingual (EN/VI) speaking notes, one entry per slide, in the same order as `sli
 **VI:** Đây là ảnh khôi phục thực tế ở batch 2 trên ResNet-18. Dù PSNR giảm, cả hai ảnh vẫn có thể nhận diện riêng biệt -- tấn công suy giảm từ từ chứ không sụp đổ hoàn toàn.
 
 ## Slide 22: RQ3: R-GAP at Batch Size 2 -- the Linear-Combination Property
-**EN:** R-GAP behaves very differently depending on architecture. On the purely linear FCN3 network, it recovers almost exactly the pixel average of the two images -- a direct consequence of the gradient equation being linear. But on the convolutional LeNetRGAP, the extra forward-pass constraints break that, and the result matches neither image nor their average -- it's essentially noise.
-**VI:** R-GAP hành xử rất khác nhau tùy kiến trúc. Trên mạng FCN3 hoàn toàn tuyến tính, nó khôi phục gần như chính xác trung bình pixel của hai ảnh -- hệ quả trực tiếp của việc phương trình gradient là tuyến tính. Nhưng trên LeNetRGAP có tích chập, các ràng buộc forward-pass bổ sung phá vỡ điều đó, và kết quả không khớp với ảnh nào cũng không khớp với trung bình -- về cơ bản là nhiễu.
+**EN:** R-GAP behaves very differently depending on architecture. FCN3 has no convolutional layers, so even though it does have a LeakyReLU at every layer, R-GAP inverts that exactly -- what actually matters is the absence of convolution, not linearity -- and the result closely matches the direction of the pixel average of the two images. On the convolutional LeNetRGAP, the extra forward-pass constraints break that, and the result matches neither image nor their average -- it's essentially noise.
+**VI:** R-GAP hành xử rất khác nhau tùy kiến trúc. FCN3 không có lớp tích chập nào, nên dù mỗi layer đều có LeakyReLU, R-GAP vẫn đảo ngược được chính xác hàm đó -- điều thực sự quan trọng là không có tích chập, chứ không phải tính tuyến tính -- và kết quả khớp rất gần về hướng với trung bình pixel của hai ảnh. Nhưng trên LeNetRGAP có tích chập, các ràng buộc forward-pass bổ sung phá vỡ điều đó, và kết quả không khớp với ảnh nào cũng không khớp với trung bình -- về cơ bản là nhiễu.
 
 ## Slide 23: RQ3: R-GAP Batch-2 Reconstructions
 **EN:** Seeing it confirms the numbers: the CNN variant on top is visually just colored noise, while FCN3 on the bottom is a clean, recognizable blend of the horse and the ostrich-like bird.

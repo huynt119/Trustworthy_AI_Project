@@ -148,8 +148,9 @@ optimization loop
 %------------------------------------------------
 
 \begin{frame}{DP-SGD as a Post-Hoc Defense}
-The standard defense against exactly this leakage: perturb the gradient on the client,
-before it is ever shared, so the attacker never sees the true $g$.
+Reuses DP-SGD's clip-and-noise mechanics against exactly this leakage -- applied once
+to the already-aggregated gradient, not the per-example, training-integrated,
+formally-private mechanism of DP-SGD itself.
 \[
 \tilde{g} = \mathrm{clip}(g, C) + \mathcal{N}\!\big(0,\, (\sigma C)^2 I\big),
 \qquad
@@ -173,7 +174,7 @@ one tolerates
 %------------------------------------------------
 
 \begin{frame}{Evaluation: Four Research Questions}
-Each RQ changes exactly one factor relative to a shared anchor (LeNet, CIFAR-10, batch
+Each RQ primarily varies one factor relative to a shared anchor (LeNet, CIFAR-10, batch
 1, no defense):
 \begin{itemize}
 \item \textbf{RQ1.} Same architecture, dataset, and batch size -- how do an
@@ -276,7 +277,7 @@ Does Inverting Gradients' design actually deliver at a realistic scale?
 \small
 \item Untrained ResNet-18, 11.7M params, $224{\times}224$ image -- an order of magnitude
 larger than RQ1's LeNet
-\item MSE $=0.2944$, PSNR $=17.33$ dB -- visibly identifiable, but well below RQ1's
+\item MSE $=0.0185$, PSNR $=17.33$ dB -- visibly identifiable, but well below RQ1's
 26.48 dB on the smaller network
 \end{itemize}
 \end{frame}
@@ -330,14 +331,14 @@ degrade the same way on every architecture?
 Architecture & vs.\ image A & vs.\ image B & vs.\ average $(A{+}B)/2$ \\
 \midrule
 LeNetRGAP (CNN) & 0.062 & 0.055 & 0.061 \\
-FCN3 (linear only) & 0.959 & 0.967 & 1.000 \\
+FCN3 (fully-connected, LeakyReLU) & 0.959 & 0.967 & 1.000 \\
 \bottomrule
 \end{tabular}
 \bigskip
 \begin{itemize}
-\item On the purely linear FCN3, R-GAP's recursive solution is exactly the
-\emph{average} of the two inputs -- a direct consequence of the gradient equation
-being linear in the input
+\item On FCN3 (no conv layers), R-GAP's recursive solution closely matches the
+\emph{direction} of the average of the two inputs -- R-GAP inverts its LeakyReLU
+exactly, so nonlinearity isn't what matters here
 \item A convolutional architecture (LeNetRGAP) adds extra forward-pass constraints that
 this blended, two-image signal does not satisfy -- the reconstruction matches neither
 image nor their average
@@ -353,7 +354,7 @@ image nor their average
 \begin{itemize}
 \small
 \item LeNetRGAP/CNN (top): visibly uncorrelated noise
-\item FCN3 (bottom): a clean blend of the two source images -- the pixel average
+\item FCN3 (bottom): closely matches the direction of the pixel average
 \end{itemize}
 \end{frame}
 
