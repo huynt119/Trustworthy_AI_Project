@@ -8,22 +8,23 @@ Three victim architectures are used across the attacks studied in this
 project:
 
 \begin{itemize}[leftmargin=1.6em]
-  \item \textbf{LeNet-style CNN} - four convolutional layers followed by a
+\setlength{\emergencystretch}{2em}
+  \item \textbf{LeNet-style CNN} --- four convolutional layers followed by a
   fully-connected head. Two variants are used: the original DLG
   formulation (bias, sigmoid activations), used for DLG/iDLG and, under
   the same architecture, initial weights, and image, for Inverting
   Gradients, providing a common architecture for the three-attack
-  comparison later in this chapter; and a bias-free, LeakyReLU variant
+  comparison in Chapter~\ref{chap:experiment}; and a bias-free, LeakyReLU variant
   required by R-GAP (referred to here as LeNetRGAP), since R-GAP's
   per-layer equations assume an affine map with no
   additive bias and an invertible activation; its output layer is a single
   logit trained with binary logistic loss, since R-GAP's closed-form
   output-layer inversion is only defined for a scalar, sigmoid-activated
   loss.
-  \item \textbf{ResNet-18} - used for Inverting Gradients, to test attack
+  \item \textbf{ResNet-18} --- used for Inverting Gradients, to test attack
   scalability on a deeper, residual architecture closer to what is
   deployed in practice.
-  \item \textbf{FCN3} - a three-layer, bias-free, fully-connected network
+  \item \textbf{FCN3} --- a three-layer, bias-free, fully-connected network
   (1000, 100, 1 units, LeakyReLU throughout), used alongside LeNetRGAP for
   R-GAP as a point of comparison: it has no
   convolutional layers, and therefore no extra forward-pass constraints
@@ -72,8 +73,8 @@ with a cosine-similarity cost and adds a total-variation image prior:
 \label{eq:ig-objective}
 \end{equation}
 where $\mathrm{TV}(\hat{x}) = \sum_{i,j} |\hat{x}_{i+1,j} - \hat{x}_{i,j}| + |\hat{x}_{i,j+1} - \hat{x}_{i,j}|$
-is the total variation of the image - the sum of absolute differences
-between horizontally and vertically neighboring pixels - which penalizes
+is the total variation of the image --- the sum of absolute differences
+between horizontally and vertically neighboring pixels --- which penalizes
 non-smooth reconstructions. The label $y$ is recovered the same way as in
 iDLG (Equation~\eqref{eq:idlg-label}), and $\hat{x}$ is constrained to the
 valid image range $[0,1]^d$ by a box constraint. Two choices make
@@ -87,7 +88,7 @@ controlling the step size. This project evaluates Equation~\eqref{eq:ig-objectiv
 on an untrained ResNet-18 victim model, and separately on the shared LeNet
 architecture described above, under the same weights
 and image used for DLG/iDLG; the latter configuration is the one used in
-the defense comparison later in this chapter.
+the defense comparison in Chapter~\ref{chap:experiment}.
 
 \section{R-GAP}
 \label{sec:rgap}
@@ -113,8 +114,8 @@ scalar equation solved numerically (the loss-to-logit derivative is a
 monotonic function of the scalar logit for the binary logistic loss used
 here). With $\partial \ell/\partial z_l$ known, Equation~\eqref{eq:rgap-weight-grad}
 becomes a linear system for the unknown $a_{l-1}$, solved by least squares;
-recursing this from $l = L$ down to $l = 1$ recovers $a_0 = x$ - the
-private input itself - with \emph{no} optimization loop: each layer's
+recursing this from $l = L$ down to $l = 1$ recovers $a_0 = x$ --- the
+private input itself --- with \emph{no} optimization loop: each layer's
 equation is solved exactly, subject to its own rank/invertibility
 condition. Convolutional layers are handled by first re-expressing the
 weight-sharing convolution as an equivalent dense (circulant) matrix

@@ -23,7 +23,7 @@ aggregates with the FedAvg rule
 w_{t+1} = w_t + \sum_{k \in S_t} \frac{n_k}{\sum_{j \in S_t} n_j} \, \Delta w_k^{(t)}.
 \label{eq:fedavg}
 \end{equation}
-Only $\Delta w_k^{(t)}$ (equivalently $g_k^{(t)}$) ever leaves the client -
+Only $\Delta w_k^{(t)}$ (equivalently $g_k^{(t)}$) ever leaves the client ---
 never $x_i$ or $y_i$ directly.
 
 \section{Threat Model}
@@ -45,7 +45,7 @@ and both reduce to the same observation:
 $\ell(\cdot\,;\cdot)$, the current global weights $w_t$, and the leaked
 gradient (or update) itself. \textbf{What the attacker does not know:} the
 private batch $\{(x_i, y_i)\}$ that produced that gradient. The attacker
-makes no other assumption and does not deviate from the protocol - it is
+makes no other assumption and does not deviate from the protocol --- it is
 purely a passive observer of data every FL deployment already produces.
 
 \section{The Gradient Inversion Problem}
@@ -82,7 +82,7 @@ attacks instead treat Equation~\eqref{eq:leak} as a system of per-layer
 equations and solve directly for $\{\hat{x}_i\}$ by linear algebra, with no
 search and no loss $D$ to minimize. Chapter~\ref{chap:methodology} details
 both routes for each method implemented in this project. How the quality
-of $(\hat{x}, \hat{y})$ is measured against the true $(x, y)$ - and under
-what gradient-perturbation defense budget - is defined separately in
+of $(\hat{x}, \hat{y})$ is measured against the true $(x, y)$ --- and under
+what gradient-perturbation defense budget --- is defined separately in
 Chapter~\ref{chap:experiment}, since it is a property of the evaluation, not of the problem
 statement itself.
