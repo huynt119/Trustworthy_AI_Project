@@ -12,7 +12,7 @@
 
 \title{Gradient Inversion Attacks in Federated Learning}
 \subtitle{Deep Leakage from Gradients: Reconstructing Client Data from Shared Updates}
-\author{}
+\author[Hoang, Nga, Huy, Khuong, Chien]{Do Tuan Hoang \and Le Thi Nguyet Nga \and Nguyen Truong Huy\\Nguyen Tien Khuong \and Hoang Huy Chien}
 \date{\today}
 
 \begin{document}
@@ -256,14 +256,17 @@ Both start from the same random noise; this is how they reach the result above.
 %------------------------------------------------
 
 \begin{frame}{RQ1: R-GAP Needs Float64}
-R-GAP's exactness above is conditional on precision -- repeating it in float32 fails:
+The stored float64 result is exact. The stored float32 repeat fails; a later CPU repeat does not:
 \centering
 \includegraphics[width=.9\linewidth,height=.55\textheight,keepaspectratio]{rq1_rgap_float.png}
 \begin{itemize}
 \small
-\item float64: exact (MSE $<10^{-7}$) \quad vs.\quad float32: MSE $=91.25$, PSNR $=-19.6$ dB
-\item Failure localized to the final linear solve, where the smallest singular value
-amplifies rounding error
+\item Stored float64 result is exact after the float32 cast; before that cast a
+later run measured MSE $2.72\times10^{-22}$
+\item The stored float32 collapse is MSE $=91.25$, PSNR $=-19.6$ dB. A later CPU
+run reached 66.6 dB instead, so that collapse is run-specific
+\item In the stored failure, the error appears at the final linear solve, where the
+smallest singular value amplifies rounding error
 \end{itemize}
 \end{frame}
 
@@ -277,8 +280,9 @@ Does Inverting Gradients' design actually deliver at a realistic scale?
 \small
 \item Untrained ResNet-18, 11.7M params, $224{\times}224$ image -- an order of magnitude
 larger than RQ1's LeNet
-\item MSE $=0.0185$, PSNR $=17.33$ dB -- visibly identifiable, but well below RQ1's
-26.48 dB on the smaller network
+\item Denormalized MSE $=0.0185$, PSNR $=17.33$ dB. The normalized-tensor MSE is
+about $0.30$; these two numbers are not the same quantity
+\item Visibly identifiable, but well below RQ1's 26.48 dB on the smaller network
 \end{itemize}
 \end{frame}
 
@@ -382,6 +386,9 @@ the gradient's magnitude and collapses under aggressive clipping even at $\sigma
 Inverting Gradients' cosine cost is scale-invariant and barely changes
 \item Increasing $\sigma$ then degrades both, but iDLG collapses sharply between
 $10^{-4}$ and $10^{-3}$, while Inverting Gradients stays above 17 dB at that point
+\item The 27.94 dB row is a 4{,}800-step median-filtered run. A paired ablation
+scored 27.85 dB at 4{,}800 steps and 26.36 dB at 24{,}000, so it is not above
+the RQ1 baseline because clipping helped
 \end{itemize}
 \end{frame}
 
@@ -428,8 +435,8 @@ noise, three to four orders of magnitude below where iDLG breaks
 \includegraphics[width=.95\linewidth,height=.68\textheight,keepaspectratio]{rq4_rgap_grid.png}
 \begin{itemize}
 \small
-\item The break between $\sigma=10^{-7}$ and $10^{-6}$ is visible by eye, at a noise
-level too small to touch DLG, iDLG, or Inverting Gradients at all
+\item The no-clip row breaks at $\sigma=10^{-6}$; half-norm clipping still
+reaches 12.82 dB there. This sweep does not isolate the cause of the difference.
 \end{itemize}
 \end{frame}
 
@@ -446,7 +453,9 @@ level too small to touch DLG, iDLG, or Inverting Gradients at all
 \begin{frame}{Key Takeaways}
 \begin{itemize}
 \item Gradients alone are enough to reconstruct private images/labels
-\item Closed-form (R-GAP) is exact and fastest, but fragile: precision and batch size
+\item Closed-form (R-GAP) matches the image in float64, but the reported infinity
+is the float32 cast. It is fragile to precision and to batch size
+\item Do not rank attacks by wall time across CPU and GPU runs
 \item Optimization-based attacks scale further but converge less precisely
 \item DP-SGD noise that defeats R-GAP leaves DLG/iDLG visibly unaffected
 \item No single defense budget suppresses every attack family equally
