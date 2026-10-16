@@ -7,8 +7,8 @@ FedAvg~\cite{mcmahan2017fedavg} is the foundational FL algorithm and the
 training protocol assumed throughout this project: clients run several
 steps of local SGD on their own data and the server aggregates the
 resulting updates by a weighted average (Equation~\ref{eq:fedavg} in
-Chapter~\ref{chap:problem-statement}). Its privacy argument is informal -
-clients never transmit raw data, only model updates - and is exactly the
+Chapter~\ref{chap:problem-statement}). Its privacy argument is informal ---
+clients never transmit raw data, only model updates --- and is exactly the
 assumption the gradient inversion literature below sets out to test.
 
 \section{Optimization-Based Gradient Inversion}
@@ -24,7 +24,7 @@ alongside the image makes convergence slow and occasionally unstable.
 
 \textbf{iDLG}~\cite{zhao2020idlg} removes that instability by observing
 that, for cross-entropy loss on a one-hot label, the sign pattern of the
-last layer's gradient identifies the ground-truth class in closed form -
+last layer's gradient identifies the ground-truth class in closed form ---
 only the dummy image still needs to be optimized. This simplification
 makes convergence markedly more reliable.
 

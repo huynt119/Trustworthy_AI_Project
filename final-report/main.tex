@@ -20,28 +20,27 @@
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{array}
+\usepackage[section]{placeins}
 
 \title{\fontsize{32}{38}\selectfont\textbf{Gradient Inversion Attacks\\ in Federated Learning}\\[10pt]
 \large Deep Leakage from Gradients:\\ Reconstructing Client Data from Shared Updates}
 % Fill in each member's name, student ID, and email below (5 members, laid
 % out as a row of 3 then a row of 2). Each column is a fixed fraction of
-% \textwidth (not resized to fit), and emails use \url{} so a long address
-% wraps onto a second line instead of shrinking the whole block; to
-% add/remove a member, duplicate/delete a column (and adjust the p{}
-% widths so each row's columns plus gaps stay under \textwidth).
+% \textwidth. Emails use a consistent 9pt body font to fit on one line.
+% Keep the sum of column widths and inter-column gaps within \textwidth.
 \author{%
 \mbox{}\\[10\baselineskip]
 \large\textbf{Group 1}\\[1em]
-\begin{tabular}{@{}>{\centering\arraybackslash}p{0.3\textwidth}@{\hspace{1.5em}}>{\centering\arraybackslash}p{0.3\textwidth}@{\hspace{1.5em}}>{\centering\arraybackslash}p{0.3\textwidth}@{}}
+\begin{tabular}{@{}>{\centering\arraybackslash}p{0.31\textwidth}@{\hspace{0.015\textwidth}}>{\centering\arraybackslash}p{0.31\textwidth}@{\hspace{0.015\textwidth}}>{\centering\arraybackslash}p{0.31\textwidth}@{}}
 \textbf{Do Tuan Hoang} & \textbf{Le Thi Nguyet Nga} & \textbf{Nguyen Truong Huy} \\
 20261219M & 20261066M & 20261260M \\
-\small\url{Hoang.DT261219M@sis.hust.edu.vn} & \small\url{Nga.LTN261066M@sis.hust.edu.vn} & \small\url{Huy.NT261260M@sis.hust.edu.vn} \\
+\mbox{\fontspec{TeX Gyre Termes}\fontsize{9}{11}\selectfont Hoang.DT261219M@sis.hust.edu.vn} & \mbox{\fontspec{TeX Gyre Termes}\fontsize{9}{11}\selectfont Nga.LTN261066M@sis.hust.edu.vn} & \mbox{\fontspec{TeX Gyre Termes}\fontsize{9}{11}\selectfont Huy.NT261260M@sis.hust.edu.vn} \\
 \end{tabular}
 \\[3em]
 \begin{tabular}{@{}>{\centering\arraybackslash}p{0.42\textwidth}@{\hspace{1.5em}}>{\centering\arraybackslash}p{0.42\textwidth}@{}}
 \textbf{Nguyen Tien Khuong} & \textbf{Hoang Huy Chien} \\
 20261220M & 20261069M \\
-\small\url{Khuong.NT261220M@sis.hust.edu.vn} & \small\url{Chien.HH261069M@sis.hust.edu.vn} \\
+\mbox{\fontspec{TeX Gyre Termes}\fontsize{9}{11}\selectfont Khuong.NT261220M@sis.hust.edu.vn} & \mbox{\fontspec{TeX Gyre Termes}\fontsize{9}{11}\selectfont Chien.HH261069M@sis.hust.edu.vn} \\
 \end{tabular}
 }
 \date{}

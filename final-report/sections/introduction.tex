@@ -3,7 +3,7 @@
 
 Federated Learning (FL) is a distributed training setup where many clients
 (e.g.\ phones, hospitals, organizations) collaboratively train one shared
-model without pooling their data on a central server - each client trains
+model without pooling their data on a central server --- each client trains
 locally on its own private data and only sends back the resulting model
 update~\cite{mcmahan2017fedavg}. This is often presented as a
 privacy-preserving alternative to centralized training: since raw data
@@ -13,7 +13,7 @@ confidential by construction.\footnote{Code, experiment notebooks, and the
 \url{https://github.com/huynt119/Trustworthy_AI_Project}.}
 
 This project studies whether that assumption actually holds. The gradient
-(or weight update) a client sends is not an opaque summary - it is the
+(or weight update) a client sends is not an opaque summary --- it is the
 deterministic output of backpropagating a loss on the client's private
 batch through a model architecture the server already knows. If that
 function can be inverted, the private batch can be reconstructed from the
@@ -26,9 +26,9 @@ This project focuses on two broad attack strategies: \emph{optimization-based}
 attacks, which search for an input/label pair that reproduces the leaked
 gradient, and \emph{closed-form} attacks, which solve for it directly from
 the per-layer gradient equations, with no search involved. It implements
-one representative method from each - DLG~\cite{zhu2019dlg}/iDLG~\cite{zhao2020idlg}
+one representative method from each --- DLG~\cite{zhu2019dlg}/iDLG~\cite{zhao2020idlg}
 and Inverting Gradients~\cite{geiping2020inverting} on the optimization
-side, R-GAP~\cite{zhu2021rgap} on the closed-form side - on a common set of
+side, R-GAP~\cite{zhu2021rgap} on the closed-form side --- on a common set of
 victim architectures, and evaluates both families against a
 DP-SGD-style~\cite{abadi2016dpsgd} gradient perturbation defense.
 
