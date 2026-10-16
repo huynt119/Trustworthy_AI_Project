@@ -59,6 +59,10 @@ def main():
             r'RAW_DIR = r"E:\Project\Trustworthy_AI_Project\final-report\raw"',
             f'RAW_DIR = r"{out_dir}"',
         )
+        src = src.replace(
+            "Path.cwd().parent / 'final-report' / 'verification_cpu'",
+            f"Path(r'{out_dir}')",
+        )
         stdout, stderr = Tee(sys.stdout), Tee(sys.stderr)
         print(f"\n===== CELL {i} =====", flush=True)
         err = None

@@ -156,14 +156,12 @@ on the CPU. Without separately instrumented stages and a common timing
 protocol for all attacks, these observations do not establish a general
 runtime ranking or which stage dominates R-GAP's runtime.
 
-\paragraph{Separate CPU verification.} A subsequent Python 3.12.12 CPU run
-measured 75.91~s for this baseline. A separately instrumented repeat took
-84.12~s, including 2.99~s for scalar Adam and 78.49~s for the four
-least-squares solves. These are not replacements for historical timings,
-but contradict attributing nearly all runtime to the scalar solve.
-Before casting the reconstructed image to float32, this repeat obtained
-MSE $2.72\times10^{-22}$ and PSNR 215.66~dB; the reported infinity arises
-after the float32 cast makes the measured error zero.
+\paragraph{GPU rerun.} The same notebook on an RTX 4060 took 174~s for the
+baseline. A profiled repeat took 127~s, of which 12~s was the scalar solve
+and 112~s was the four least-squares solves, which run in NumPy on the CPU
+even when the model is on the GPU. Before the float32 cast, float64 MSE was
+$2.84\times10^{-22}$ and PSNR was 215.47~dB. The reported infinity is that
+cast. These timings are not a ranking against the stored 57.1~s.
 
 Figure~\ref{fig:rq1-milestones} tracks how DLG and iDLG reach that final
 reconstruction: both start from the same random noise and converge toward
@@ -192,10 +190,8 @@ dominant noise. DLG and iDLG have no equivalent failure mode at this
 precision, since gradient descent is not solving an exact linear system at
 any step.
 
-The separate CPU verification instead reached 66.57~dB in the float32
-test and did not reproduce this collapse. The historical figure therefore
-illustrates a run-specific numerical failure, not proof that float32
-necessarily destroys the attack on this architecture.
+The GPU rerun reproduces this collapse: float32 MSE $91.00$, PSNR
+$-19.59$~dB.
 
 \begin{figure}[h]
 \centering
@@ -431,11 +427,11 @@ descent does across hundreds of steps -- giving DP-SGD a use it otherwise
 lacks: a noise level too small to touch the optimization-based attacks
 already defeats R-GAP outright.
 
-These breaking points describe the historical noise realizations, not
-universal thresholds. In the separate CPU sweep, nominal no clipping
-retained 14.66~dB at $\sigma=10^{-6}$, whereas half-norm clipping produced
-$-14.61$~dB there. Repeated, paired-noise trials are needed before
-attributing either ordering to clipping-induced numerical conditioning.
+A GPU rerun of the same 16-point grid reproduces this table, including
+$12.82$~dB with half-norm clipping and $-19.53$~dB without clipping at
+$\sigma=10^{-6}$. The two rows use different noise draws and different
+clip thresholds, so the gap is not by itself evidence that clipping
+improves conditioning.
 
 \begin{table}[h]
 \centering

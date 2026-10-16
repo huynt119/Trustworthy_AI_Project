@@ -1,0 +1,213 @@
+
+===== CELL 1 =====
+Running on cuda
+2.14.1+cu130 0.29.1+cu130
+
+===== CELL 3 =====
+
+===== CELL 5 =====
+LeNetRGAP(
+  (body): ModuleList(
+    (0): Sequential(
+      (layer): Conv2d(3, 12, kernel_size=(5, 5), stride=(2, 2), padding=(2, 2), bias=False)
+      (act): LeakyReLU(negative_slope=0.2)
+    )
+    (1): Sequential(
+      (layer): Conv2d(12, 12, kernel_size=(5, 5), stride=(2, 2), padding=(2, 2), bias=False)
+      (act): LeakyReLU(negative_slope=0.2)
+    )
+    (2-3): 2 x Sequential(
+      (layer): Conv2d(12, 12, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), bias=False)
+      (act): LeakyReLU(negative_slope=0.2)
+    )
+    (4): Sequential(
+      (layer): Linear(in_features=768, out_features=1, bias=False)
+      (act): Identity()
+    )
+  )
+)
+
+===== CELL 7 =====
+model's own logit: 0.002915 -> attack label y = 0 (true CIFAR label was 3, unused by the attack)
+so luong tensor gradient: 5
+
+===== CELL 9 =====
+[R-GAP] inverse_udldu residual: 0.00e+00
+[R-GAP] lstsq residual: [2.74107512e-32], rank: 1728 -> 1728, max/min singular value: 1.25e+00/6.89e-02
+[R-GAP] lstsq residual: [7.31330548e-30], rank: 1728 -> 1728, max/min singular value: 1.24e+00/2.80e-02
+[R-GAP] lstsq residual: [3.38336475e-29], rank: 4800 -> 4800, max/min singular value: 1.17e+00/7.66e-05
+[R-GAP] lstsq residual: [2.56248364e-24], rank: 3888 -> 3888, max/min singular value: 1.29e+00/3.29e-04
+
+Total R-GAP time: 174.2s (khong co vong lap optimize anh, so voi 300 iteration L-BFGS cua DLG/iDLG o Part 1)
+
+===== CELL 11 =====
+part3.ipynb:cell11:46: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+
+===== CELL 13 =====
+MSE: 0.00000000 | PSNR: inf dB
+part3.ipynb:cell13:9: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+
+===== CELL 15 =====
+[R-GAP] inverse_udldu residual: 0.00e+00
+[R-GAP] lstsq residual: [6.39122656e-10], rank: 1728 -> 1728, max/min singular value: 1.25e+00/6.89e-02
+[R-GAP] lstsq residual: [4.11872476e-08], rank: 1728 -> 1728, max/min singular value: 1.24e+00/2.80e-02
+[R-GAP] lstsq residual: [1.3404843e-05], rank: 4800 -> 4800, max/min singular value: 1.17e+00/7.81e-05
+[R-GAP] lstsq residual: [0.62644796], rank: 3888 -> 3888, max/min singular value: 1.29e+00/3.19e-04
+float32 R-GAP time: 175.6s
+float32 -> MSE: 90.9997 | PSNR: -19.59 dB
+part3.ipynb:cell15:37: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+
+===== CELL 18 =====
+Global L2 norm of the original gradient: 0.115046 | clip norms C: [0.057523, 0.115046]
+[R-GAP] inverse_udldu residual: 2.50e-05
+[R-GAP] lstsq residual: [7.47060322e-33], rank: 1728 -> 1728, max/min singular value: 1.25e+00/6.88e-02
+[R-GAP] lstsq residual: [1.98919621e-30], rank: 1728 -> 1728, max/min singular value: 1.24e+00/2.80e-02
+[R-GAP] lstsq residual: [8.76031046e-30], rank: 4800 -> 4800, max/min singular value: 1.17e+00/7.65e-05
+[R-GAP] lstsq residual: [7.22415247e-25], rank: 3888 -> 3888, max/min singular value: 1.29e+00/3.28e-04
+[ 1/16] C=0.057523     sigma=0e+00    -> MSE     0.0382 | PSNR    14.18 dB | 138.4s
+[R-GAP] inverse_udldu residual: -3.66e-08
+[R-GAP] lstsq residual: [4.28252997e-17], rank: 1728 -> 1728, max/min singular value: 1.25e+00/6.88e-02
+[R-GAP] lstsq residual: [2.03086731e-15], rank: 1728 -> 1728, max/min singular value: 1.24e+00/2.80e-02
+[R-GAP] lstsq residual: [6.58679221e-16], rank: 4800 -> 4800, max/min singular value: 1.17e+00/7.65e-05
+[R-GAP] lstsq residual: [5.59993459e-11], rank: 3888 -> 3888, max/min singular value: 1.29e+00/3.28e-04
+[ 2/16] C=0.057523     sigma=1e-09    -> MSE     0.0382 | PSNR    14.18 dB | 141.1s
+[R-GAP] inverse_udldu residual: -3.07e-04
+[R-GAP] lstsq residual: [3.84072291e-15], rank: 1728 -> 1728, max/min singular value: 1.25e+00/6.89e-02
+[R-GAP] lstsq residual: [2.27132249e-13], rank: 1728 -> 1728, max/min singular value: 1.24e+00/2.80e-02
+[R-GAP] lstsq residual: [7.2616137e-14], rank: 4800 -> 4800, max/min singular value: 1.17e+00/7.66e-05
+[R-GAP] lstsq residual: [1.00484193e-08], rank: 3888 -> 3888, max/min singular value: 1.29e+00/3.28e-04
+[ 3/16] C=0.057523     sigma=1e-08    -> MSE     0.0381 | PSNR    14.19 dB | 161.6s
+[R-GAP] inverse_udldu residual: -1.30e-09
+[R-GAP] lstsq residual: [3.95995429e-13], rank: 1728 -> 1728, max/min singular value: 1.25e+00/6.88e-02
+[R-GAP] lstsq residual: [1.86375657e-11], rank: 1728 -> 1728, max/min singular value: 1.24e+00/2.80e-02
+[R-GAP] lstsq residual: [6.60128353e-12], rank: 4800 -> 4800, max/min singular value: 1.17e+00/7.65e-05
+[R-GAP] lstsq residual: [7.60822216e-07], rank: 3888 -> 3888, max/min singular value: 1.29e+00/3.28e-04
+[ 4/16] C=0.057523     sigma=1e-07    -> MSE     0.0379 | PSNR    14.21 dB | 170.3s
+[R-GAP] inverse_udldu residual: -4.62e-13
+[R-GAP] lstsq residual: [3.95560583e-11], rank: 1728 -> 1728, max/min singular value: 1.25e+00/6.88e-02
+[R-GAP] lstsq residual: [1.81866797e-09], rank: 1728 -> 1728, max/min singular value: 1.24e+00/2.80e-02
+[R-GAP] lstsq residual: [9.80400198e-10], rank: 4800 -> 4800, max/min singular value: 1.17e+00/7.64e-05
+[R-GAP] lstsq residual: [0.0001098], rank: 3888 -> 3888, max/min singular value: 1.29e+00/3.31e-04
+[ 5/16] C=0.057523     sigma=1e-06    -> MSE     0.0522 | PSNR    12.82 dB | 167.7s
+[R-GAP] inverse_udldu residual: -4.76e-11
+[R-GAP] lstsq residual: [3.97435418e-09], rank: 1728 -> 1728, max/min singular value: 1.25e+00/6.88e-02
+[R-GAP] lstsq residual: [2.24583412e-06], rank: 1728 -> 1728, max/min singular value: 1.24e+00/2.81e-02
+[R-GAP] lstsq residual: [3.55202832e-07], rank: 4800 -> 4800, max/min singular value: 1.17e+00/7.56e-05
+[R-GAP] lstsq residual: [0.02455057], rank: 3888 -> 3888, max/min singular value: 1.29e+00/3.40e-04
+[ 6/16] C=0.057523     sigma=1e-05    -> MSE     6.7761 | PSNR    -8.31 dB | 166.3s
+[R-GAP] inverse_udldu residual: 1.46e-11
+[R-GAP] lstsq residual: [7.50837399e-07], rank: 1728 -> 1728, max/min singular value: 1.25e+00/6.89e-02
+[R-GAP] lstsq residual: [2.92595712e-05], rank: 1728 -> 1728, max/min singular value: 1.24e+00/2.86e-02
+[R-GAP] lstsq residual: [2.1246442e-05], rank: 4800 -> 4800, max/min singular value: 1.17e+00/9.41e-05
+[R-GAP] lstsq residual: [0.83906079], rank: 3888 -> 3888, max/min singular value: 1.29e+00/3.08e-04
+[ 7/16] C=0.057523     sigma=1e-04    -> MSE   183.2759 | PSNR   -22.63 dB | 155.0s
+[R-GAP] inverse_udldu residual: 0.00e+00
+[R-GAP] lstsq residual: [5.91163168e-05], rank: 1728 -> 1728, max/min singular value: 1.25e+00/7.02e-02
+[R-GAP] lstsq residual: [0.00241064], rank: 1728 -> 1728, max/min singular value: 1.24e+00/2.95e-02
+[R-GAP] lstsq residual: [0.00107958], rank: 4800 -> 4800, max/min singular value: 1.17e+00/1.95e-04
+[R-GAP] lstsq residual: [54.46831747], rank: 3888 -> 3888, max/min singular value: 1.29e+00/3.63e-04
+[ 8/16] C=0.057523     sigma=1e-03    -> MSE  4816.0405 | PSNR   -36.83 dB | 150.4s
+[R-GAP] inverse_udldu residual: 0.00e+00
+[R-GAP] lstsq residual: [2.74107512e-32], rank: 1728 -> 1728, max/min singular value: 1.25e+00/6.89e-02
+[R-GAP] lstsq residual: [7.31330548e-30], rank: 1728 -> 1728, max/min singular value: 1.24e+00/2.80e-02
+[R-GAP] lstsq residual: [3.38336475e-29], rank: 4800 -> 4800, max/min singular value: 1.17e+00/7.66e-05
+[R-GAP] lstsq residual: [2.56248364e-24], rank: 3888 -> 3888, max/min singular value: 1.29e+00/3.29e-04
+[ 9/16] C=0.115046     sigma=0e+00    -> MSE     0.0000 | PSNR      inf dB | 140.6s
+[R-GAP] inverse_udldu residual: -3.79e-11
+[R-GAP] lstsq residual: [1.5830752e-16], rank: 1728 -> 1728, max/min singular value: 1.25e+00/6.89e-02
+[R-GAP] lstsq residual: [6.38938706e-15], rank: 1728 -> 1728, max/min singular value: 1.24e+00/2.80e-02
+[R-GAP] lstsq residual: [2.14089441e-15], rank: 4800 -> 4800, max/min singular value: 1.17e+00/7.66e-05
+[R-GAP] lstsq residual: [2.49678724e-10], rank: 3888 -> 3888, max/min singular value: 1.29e+00/3.29e-04
+[10/16] C=0.115046     sigma=1e-09    -> MSE     0.0000 | PSNR    73.22 dB | 150.5s
+[R-GAP] inverse_udldu residual: 6.09e-08
+[R-GAP] lstsq residual: [1.77843528e-14], rank: 1728 -> 1728, max/min singular value: 1.25e+00/6.89e-02
+[R-GAP] lstsq residual: [8.65984617e-13], rank: 1728 -> 1728, max/min singular value: 1.24e+00/2.80e-02
+[R-GAP] lstsq residual: [2.45810232e-13], rank: 4800 -> 4800, max/min singular value: 1.17e+00/7.66e-05
+[R-GAP] lstsq residual: [3.39225071e-08], rank: 3888 -> 3888, max/min singular value: 1.29e+00/3.29e-04
+[11/16] C=0.115046     sigma=1e-08    -> MSE     0.0000 | PSNR    51.57 dB | 140.0s
+[R-GAP] inverse_udldu residual: 1.70e-05
+[R-GAP] lstsq residual: [1.75562995e-12], rank: 1728 -> 1728, max/min singular value: 1.25e+00/6.89e-02
+[R-GAP] lstsq residual: [7.57611553e-11], rank: 1728 -> 1728, max/min singular value: 1.24e+00/2.80e-02
+[R-GAP] lstsq residual: [2.33186161e-11], rank: 4800 -> 4800, max/min singular value: 1.17e+00/7.66e-05
+[R-GAP] lstsq residual: [3.96621777e-06], rank: 3888 -> 3888, max/min singular value: 1.29e+00/3.28e-04
+[12/16] C=0.115046     sigma=1e-07    -> MSE     0.0008 | PSNR    31.02 dB | 148.4s
+[R-GAP] inverse_udldu residual: 1.28e-10
+[R-GAP] lstsq residual: [1.58621337e-10], rank: 1728 -> 1728, max/min singular value: 1.25e+00/6.89e-02
+[R-GAP] lstsq residual: [6.44883877e-09], rank: 1728 -> 1728, max/min singular value: 1.24e+00/2.80e-02
+[R-GAP] lstsq residual: [1.34092661e-05], rank: 4800 -> 4800, max/min singular value: 1.17e+00/7.81e-05
+[R-GAP] lstsq residual: [0.62719025], rank: 3888 -> 3888, max/min singular value: 1.29e+00/3.19e-04
+[13/16] C=0.115046     sigma=1e-06    -> MSE    89.7774 | PSNR   -19.53 dB | 157.0s
+[R-GAP] inverse_udldu residual: 0.00e+00
+[R-GAP] lstsq residual: [1.60778017e-08], rank: 1728 -> 1728, max/min singular value: 1.25e+00/6.89e-02
+[R-GAP] lstsq residual: [8.88278459e-06], rank: 1728 -> 1728, max/min singular value: 1.24e+00/2.81e-02
+[R-GAP] lstsq residual: [9.44797397e-06], rank: 4800 -> 4800, max/min singular value: 1.17e+00/7.64e-05
+[R-GAP] lstsq residual: [0.61310107], rank: 3888 -> 3888, max/min singular value: 1.29e+00/3.21e-04
+[14/16] C=0.115046     sigma=1e-05    -> MSE    71.2334 | PSNR   -18.53 dB | 6875.7s
+[R-GAP] inverse_udldu residual: 0.00e+00
+[R-GAP] lstsq residual: [1.549246e-06], rank: 1728 -> 1728, max/min singular value: 1.25e+00/6.89e-02
+[R-GAP] lstsq residual: [9.54685048e-05], rank: 1728 -> 1728, max/min singular value: 1.24e+00/2.81e-02
+[R-GAP] lstsq residual: [7.96031944e-05], rank: 4800 -> 4800, max/min singular value: 1.17e+00/1.62e-04
+[R-GAP] lstsq residual: [3.93271681], rank: 3888 -> 3888, max/min singular value: 1.29e+00/3.30e-04
+[15/16] C=0.115046     sigma=1e-04    -> MSE   523.1386 | PSNR   -27.19 dB | 108.8s
+[R-GAP] inverse_udldu residual: -1.33e-07
+[R-GAP] lstsq residual: [0.00022161], rank: 1728 -> 1728, max/min singular value: 1.25e+00/7.03e-02
+[R-GAP] lstsq residual: [0.0072695], rank: 1728 -> 1728, max/min singular value: 1.24e+00/2.96e-02
+[R-GAP] lstsq residual: [0.00357938], rank: 4800 -> 4800, max/min singular value: 1.17e+00/2.60e-04
+[R-GAP] lstsq residual: [178.69516922], rank: 3888 -> 3888, max/min singular value: 1.29e+00/3.68e-04
+[16/16] C=0.115046     sigma=1e-03    -> MSE 17298.6270 | PSNR   -42.38 dB | 114.0s
+
+===== CELL 20 =====
+part3.ipynb:cell20:17: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+part3.ipynb:cell20:32: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+
+===== CELL 22 =====
+Saved CPU results: /home/khuong/workspace/Trustworthy_AI_Project/final-report/verification_gpu/part3
+
+===== CELL 23 =====
+[R-GAP] inverse_udldu residual: 0.00e+00
+[R-GAP] lstsq residual: [2.74107512e-32], rank: 1728 -> 1728, max/min singular value: 1.25e+00/6.89e-02
+[R-GAP] lstsq residual: [7.31330548e-30], rank: 1728 -> 1728, max/min singular value: 1.24e+00/2.80e-02
+[R-GAP] lstsq residual: [3.38336475e-29], rank: 4800 -> 4800, max/min singular value: 1.17e+00/7.66e-05
+[R-GAP] lstsq residual: [2.56248364e-24], rank: 3888 -> 3888, max/min singular value: 1.29e+00/3.29e-04
+{
+  "device": "cuda",
+  "python": "3.12.12",
+  "torch": "2.14.1+cu130",
+  "numpy": "2.5.2",
+  "cpu": "x86_64",
+  "torch_threads": 14,
+  "seed": 50,
+  "image_index": 17,
+  "baseline_seconds": 174.17724108695984,
+  "profile_seconds": 127.31062943999859,
+  "scalar_seconds": 12.47716745100115,
+  "linear_lstsq_seconds": 111.80864366699825,
+  "other_seconds": 3.0248183219991915,
+  "float64_mse": 2.836473857555416e-22,
+  "float64_psnr_db": 215.47221214768678,
+  "float32_cast_mse": 0.0,
+  "note": "Separate CPU verification; infinity represented as null. Other time includes matrix construction and recursive bookkeeping.",
+  "stages": [
+    {
+      "stage": "scalar_adam",
+      "seconds": 12.47716745100115
+    },
+    {
+      "stage": "linear_lstsq",
+      "seconds": 13.110300418997213
+    },
+    {
+      "stage": "linear_lstsq",
+      "seconds": 12.555099149001762
+    },
+    {
+      "stage": "linear_lstsq",
+      "seconds": 56.0394364950007
+    },
+    {
+      "stage": "linear_lstsq",
+      "seconds": 30.103807603998575
+    }
+  ]
+}
+Saved CPU verification: /home/khuong/workspace/Trustworthy_AI_Project/final-report/verification_gpu/part3/rgap_baseline.json

@@ -71,8 +71,8 @@ Bilingual (EN/VI) speaking notes, one entry per slide, in the same order as `sli
 **VI:** Hình này ghi lại mười mốc trong quá trình tối ưu 300 vòng lặp. Cả hai đều bắt đầu từ nhiễu ngẫu nhiên, nhưng iDLG -- vì chỉ phải tối ưu ảnh chứ không phải nhãn -- định hình đúng hình dạng sớm hơn rõ rệt so với DLG.
 
 ## Slide 18: RQ1: R-GAP Needs Float64
-**EN:** R-GAP's stored exact result depends on float64, and the infinite PSNR appears only after the reconstruction is cast to float32. The stored float32 repeat collapses to about minus 20 dB at the last linear solve. A later CPU repeat did not reproduce that collapse and reached about 67 dB, so the figure shows one numerical failure, not a guarantee that float32 always destroys the attack.
-**VI:** Kết quả chính xác đã lưu của R-GAP phụ thuộc vào float64, và PSNR vô hạn chỉ xuất hiện sau khi ép kết quả về float32. Lần chạy float32 đã lưu sụp xuống khoảng âm 20 dB ở phép giải tuyến tính cuối. Một lần chạy CPU sau đó không lặp lại sự sụp đổ này và đạt khoảng 67 dB, nên hình đó minh họa một lỗi số học của lần chạy đó, không phải bằng chứng rằng float32 luôn phá hỏng tấn công.
+**EN:** R-GAP's stored exact result depends on float64, and the infinite PSNR appears only after the reconstruction is cast to float32. Repeating the attack in float32 collapses to about minus 20 dB at the last linear solve. A GPU rerun reproduced that collapse at minus 19.59 dB.
+**VI:** Kết quả chính xác đã lưu của R-GAP phụ thuộc vào float64, và PSNR vô hạn chỉ xuất hiện sau khi ép kết quả về float32. Chạy lại ở float32 thì sụp xuống khoảng âm 20 dB ở phép giải tuyến tính cuối. Lần chạy GPU lặp lại đúng sự sụp đổ này, ở âm 19,59 dB.
 
 ## Slide 19: RQ2: Scaling to ResNet-18
 **EN:** Here Inverting Gradients attacks an untrained ResNet-18 with 11.7 million parameters and a 224-by-224 image. The 17.33 dB figure is peak-1 PSNR after denormalization, paired with MSE 0.0185. The error on the normalized tensor is about 0.30, so those two MSE numbers must not be read as the same quantity. The image is still identifiable -- pose and fur color -- but well below the 26.48 dB LeNet result.

@@ -256,15 +256,15 @@ Both start from the same random noise; this is how they reach the result above.
 %------------------------------------------------
 
 \begin{frame}{RQ1: R-GAP Needs Float64}
-The stored float64 result is exact. The stored float32 repeat fails; a later CPU repeat does not:
+The stored float64 result is exact. Repeating it in float32 fails, and a GPU rerun does too:
 \centering
 \includegraphics[width=.9\linewidth,height=.55\textheight,keepaspectratio]{rq1_rgap_float.png}
 \begin{itemize}
 \small
 \item Stored float64 result is exact after the float32 cast; before that cast a
 later run measured MSE $2.72\times10^{-22}$
-\item The stored float32 collapse is MSE $=91.25$, PSNR $=-19.6$ dB. A later CPU
-run reached 66.6 dB instead, so that collapse is run-specific
+\item Float32 collapse: stored MSE $=91.25$, PSNR $=-19.6$ dB. The GPU rerun
+reached MSE $=91.00$, PSNR $=-19.59$ dB
 \item In the stored failure, the error appears at the final linear solve, where the
 smallest singular value amplifies rounding error
 \end{itemize}

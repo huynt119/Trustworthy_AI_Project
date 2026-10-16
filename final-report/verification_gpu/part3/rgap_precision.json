@@ -1,0 +1,6 @@
+{
+  "device": "cuda",
+  "float32_mse": 90.9996566772461,
+  "float32_psnr_db": -19.590397538215463,
+  "note": "GPU rerun. Float32 PSNR -19.59 dB matches the stored collapse."
+}

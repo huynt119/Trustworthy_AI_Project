@@ -114,5 +114,16 @@ LeNet final-image cosine to the average is 0.0608 (versus image A 0.0617, B 0.05
 FCN3's final cosine to the average is 1.0000 (A 0.9591, B 0.9665). Attack labels
 are [0, 0] for the CNN and [1, 1] for FCN3; CIFAR classes [2, 7] are unused.
 The last CNN least-squares residual is 58.29, matching the stored 58.289.
-CNN wall time was 196 s here and 59.5 s in the team notebook. The batch-1 R-GAP
-sweep was not repeated; it is the earlier CPU verification in `verification_cpu`.
+CNN wall time was 196 s here and 59.5 s in the team notebook.
+
+### Part 3 on GPU
+
+`part3/` replaces the earlier CPU sweep. Device is CUDA. Baseline float64 MSE
+before the float32 cast is 2.84e-22 (PSNR 215.47 dB); after the cast, MSE is 0
+and PSNR is infinite. The float32 attack collapses to MSE 91.00 and PSNR -19.59 dB,
+matching the stored -19.60 dB. The 16-point defense grid matches the report,
+including 12.82 dB with half-norm clipping and -19.53 dB without clipping at
+sigma 1e-6. No-clip PSNR across the first six noise levels is inf, 73.22,
+51.57, 31.02, -19.53, -18.53 dB. Least-squares solves still run in NumPy, so
+one configuration took 6876 s; the others took about 110--170 s. Profiled
+baseline: 127 s total, 12 s scalar solve, 112 s least squares.

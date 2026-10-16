@@ -1,0 +1,41 @@
+{
+  "device": "cuda",
+  "python": "3.12.12",
+  "torch": "2.14.1+cu130",
+  "numpy": "2.5.2",
+  "cpu": "x86_64",
+  "torch_threads": 14,
+  "seed": 50,
+  "image_index": 17,
+  "baseline_seconds": 174.17724108695984,
+  "profile_seconds": 127.31062943999859,
+  "scalar_seconds": 12.47716745100115,
+  "linear_lstsq_seconds": 111.80864366699825,
+  "other_seconds": 3.0248183219991915,
+  "float64_mse": 2.836473857555416e-22,
+  "float64_psnr_db": 215.47221214768678,
+  "float32_cast_mse": 0.0,
+  "note": "GPU rerun. Infinity is the float32 cast of a float64 MSE near 1e-22. Least-squares solves run in NumPy on the CPU.",
+  "stages": [
+    {
+      "stage": "scalar_adam",
+      "seconds": 12.47716745100115
+    },
+    {
+      "stage": "linear_lstsq",
+      "seconds": 13.110300418997213
+    },
+    {
+      "stage": "linear_lstsq",
+      "seconds": 12.555099149001762
+    },
+    {
+      "stage": "linear_lstsq",
+      "seconds": 56.0394364950007
+    },
+    {
+      "stage": "linear_lstsq",
+      "seconds": 30.103807603998575
+    }
+  ]
+}
