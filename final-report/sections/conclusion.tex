@@ -10,9 +10,9 @@ DP-SGD defense (Chapter~\ref{chap:experiment}).
 Across all four comparisons, a leaked gradient proved sufficient to
 reconstruct private data under both attack families, confirming that the
 privacy claim does not hold in general. The two families fail in
-different ways: the closed-form attack is exact and fast but brittle,
+different ways: the closed-form attack is exact under its float64 derivation but brittle,
 degrading sharply under batch size and under noise, while the
-optimization-based attacks are slower and less precise but degrade more
+optimization-based attacks are less precise but degrade more
 gracefully under the same conditions. Scaling to a deeper architecture is
 only tractable for the optimization-based family, and at a cost in
 fidelity. No single defense configuration protects against both families

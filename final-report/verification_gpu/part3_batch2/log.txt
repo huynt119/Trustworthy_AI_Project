@@ -1,0 +1,46 @@
+
+===== CELL 1 =====
+Running on cuda
+2.14.1+cu130 0.29.1+cu130
+
+===== CELL 3 =====
+
+===== CELL 5 =====
+part3_batch2.ipynb:cell5:17: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+
+===== CELL 6 =====
+[R-GAP] inverse_udldu residual: -1.82e-09
+[R-GAP] lstsq residual: [0.00043148], rank: 1728 -> 1728, max/min singular value: 1.25e+00/7.32e-02
+[R-GAP] lstsq residual: [0.00779855], rank: 1728 -> 1728, max/min singular value: 1.24e+00/3.17e-02
+[R-GAP] lstsq residual: [0.00273621], rank: 4800 -> 4800, max/min singular value: 1.17e+00/2.63e-04
+[R-GAP] lstsq residual: [58.28701512], rank: 3888 -> 3888, max/min singular value: 1.29e+00/3.93e-04
+CNN (LeNetRGAP) R-GAP time: 195.6s
+attack labels: [0.0, 0.0] | true CIFAR labels (unused): [2, 7]
+part3_batch2.ipynb:cell3:115: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+
+===== CELL 7 =====
+final-stage cos sim -> vs A: 0.0617 | vs B: 0.0550 | vs avg: 0.0608
+part3_batch2.ipynb:cell7:10: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+
+===== CELL 9 =====
+part3_batch2.ipynb:cell9:7: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+
+===== CELL 10 =====
+[R-GAP] inverse_udldu residual: -8.70e-12
+FCN3 R-GAP time: 23.8s
+model's own logits: [-0.0010282511096310393, -0.00105339790152868]
+attack labels: [1.0, 1.0] | true CIFAR labels (unused): [2, 7]
+part3_batch2.ipynb:cell3:115: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+
+===== CELL 11 =====
+final-stage cos sim -> vs A: 0.9591 | vs B: 0.9665 | vs avg: 1.0000
+part3_batch2.ipynb:cell11:10: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+
+===== CELL 13 =====
+                                  LeNet/CNN  FCN3/Linear
+|cos sim| @ first stage              1.0000       1.0000
+|cos sim| @ final image              0.0608       1.0000
+part3_batch2.ipynb:cell13:12: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+
+===== CELL 15 =====
+saved /home/khuong/workspace/Trustworthy_AI_Project/final-report/verification_gpu/part3_batch2/part3_batch2.npz

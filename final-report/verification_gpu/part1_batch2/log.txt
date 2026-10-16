@@ -1,0 +1,119 @@
+
+===== CELL 2 =====
+2.14.1+cu130 0.29.1+cu130
+
+===== CELL 3 =====
+Running on cuda
+
+===== CELL 5 =====
+
+===== CELL 7 =====
+Batch size is 2.
+GT labels are [2, 7] 
+Onehot labels are [2, 7]
+part1_batch2.ipynb:cell7:20: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+
+===== CELL 9 =====
+Dummy labels are [6, 3]
+part1_batch2.ipynb:cell9:11: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+
+===== CELL 11 =====
+0 2.8620
+10 0.0078
+20 0.0031
+30 0.0019
+40 0.0014
+50 0.0011
+60 0.0010
+70 0.0008
+80 0.0007
+90 0.0007
+100 0.0006
+110 0.0006
+120 0.0005
+130 0.0005
+140 0.0005
+150 0.0004
+160 0.0004
+170 0.0004
+180 0.0004
+190 0.0004
+200 0.0003
+210 0.0003
+220 0.0003
+230 0.0003
+240 0.0003
+250 0.0003
+260 0.0003
+270 0.0003
+280 0.0003
+290 0.0003
+
+===== CELL 13 =====
+Dummy labels are [2, 7] | GT labels are [2, 7]
+part1_batch2.ipynb:cell3:59: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+
+===== CELL 15 =====
+iDLG labels are [2, 7] 
+GT labels are [2, 7] 
+Recovered set is correct: True
+part1_batch2.ipynb:cell15:17: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+
+===== CELL 16 =====
+0 0.67116958
+10 0.00685980
+20 0.00301577
+30 0.00193047
+40 0.00140978
+50 0.00113327
+60 0.00094650
+70 0.00082382
+80 0.00072995
+90 0.00065124
+100 0.00059451
+110 0.00053962
+120 0.00050613
+130 0.00046862
+140 0.00044855
+150 0.00043036
+160 0.00040496
+170 0.00038682
+180 0.00036986
+190 0.00035780
+200 0.00034307
+210 0.00034540
+220 0.00031835
+230 0.00031289
+240 0.00029789
+250 0.00029187
+260 0.00028350
+270 0.00026978
+280 0.00026778
+290 0.00027621
+
+===== CELL 18 =====
+iDLG labels are [2, 7] | DLG labels are [2, 7] | GT labels are [2, 7]
+MSE to ground truth (image 0) -> DLG: 0.03131831 | iDLG: 0.02950147
+MSE to ground truth (image 1) -> DLG: 0.02326480 | iDLG: 0.02118011
+Mean MSE over the batch -> DLG: 0.02729155 | iDLG: 0.02534079
+part1_batch2.ipynb:cell18:13: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+
+===== CELL 20 =====
+Global L2 norm of the original gradient: 25.1722 | clip norms C: [12.5861, 25.1722]
+[ 1/8] C=12.5861, sigma=0.0 -> MSE 0.824788, PSNR 0.84 dB, labels correct
+[ 2/8] C=12.5861, sigma=0.0001 -> MSE 0.799973, PSNR 0.97 dB, labels correct
+[ 3/8] C=12.5861, sigma=0.001 -> MSE 3.224848, PSNR -5.09 dB, labels correct
+[ 4/8] C=12.5861, sigma=0.01 -> MSE 48.723560, PSNR -16.88 dB, labels correct
+[ 5/8] C=25.1722, sigma=0.0 -> MSE 0.035127, PSNR 14.54 dB, labels correct
+[ 6/8] C=25.1722, sigma=0.0001 -> MSE 0.070873, PSNR 11.50 dB, labels correct
+[ 7/8] C=25.1722, sigma=0.001 -> MSE 9.840268, PSNR -9.93 dB, labels correct
+[ 8/8] C=25.1722, sigma=0.01 -> MSE 69.974129, PSNR -18.45 dB, labels correct
+
+===== CELL 22 =====
+part1_batch2.ipynb:cell22:14: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+
+===== CELL 24 =====
+part1_batch2.ipynb:cell24:16: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+
+===== CELL 25 =====
+saved /home/khuong/workspace/Trustworthy_AI_Project/final-report/verification_gpu/part1_batch2/part1_batch2.npz

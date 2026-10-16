@@ -1,0 +1,6 @@
+{
+  "device": "cpu",
+  "float32_mse": 2.2049779602184572e-07,
+  "float32_psnr_db": 66.5659574715004,
+  "note": "This CPU run does not reproduce the historical float32 collapse."
+}

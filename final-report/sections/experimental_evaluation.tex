@@ -75,7 +75,16 @@ informative than noise. The ground truth $x$ is always in $[0,1]$, but the
 reconstruction $\hat{x}$ is not clamped to that range before these metrics are
 computed: under a failed or diverged attack (most visibly in the DP-SGD sweeps of
 RQ4), $\hat{x}$ can fall far outside $[0,1]$, which is what produces PSNR values far
-below $0$~dB rather than a bounded worst case. Two secondary metrics are used where
+below $0$~dB rather than a bounded worst case. LeNet images are already in $[0,1]$, so
+Equation~\eqref{eq:metrics} applies directly. The ResNet-18 notebooks normalize inputs
+with ImageNet statistics and denormalize displayed images with CIFAR-10 statistics.
+The ResNet MSE and PSNR in Sections~\ref{sec:rq2} and~\ref{sec:rq3} are peak-1
+metrics after that denormalization. A GPU rerun measured the normalized-tensor MSE
+separately, at $0.301$ for batch size 1 and $0.375$ for batch size 2; the
+corresponding denormalized MSE values were $0.0184$ and $0.0233$. The notebook PSNR
+helper also inserts $1/\mathrm{std}$ inside the logarithm and returned $17.23$~dB
+and $16.29$~dB, next to the peak-1 values $17.35$~dB and $16.33$~dB.
+Two secondary metrics are used where
 applicable: \textbf{label
 accuracy} (whether the attacker's recovered label matches the ground-truth label,
 relevant to DLG/iDLG and Inverting Gradients, which recover a label as part of the
@@ -132,10 +141,29 @@ reconstruction is indistinguishable from the ground truth. DLG and iDLG
 converge to a close but visibly noisy approximation after 300 iterations
 of optimization, and Inverting Gradients -- tuned for scale rather than
 precision on small networks -- trails both on this LeNet configuration.
-R-GAP is also the fastest attack by a wide margin, since it has no
-per-pixel optimization loop (Section~\ref{sec:rgap}); its 57.3~s is spent
-almost entirely on the one scalar optimization at the output layer, not on
-the four closed-form linear solves.
+A later GPU rerun (Python 3.12.12, PyTorch 2.14, RTX 4060) rebuilt this LeNet
+from seed 50. The DLG notebook and the Inverting Gradients LeNet notebook
+produced identical weights, and Inverting Gradients reproduced the stored
+result at MSE $0.0023$ and PSNR $26.38$~dB. DLG and iDLG again recovered
+label 3, but L-BFGS did not retrace the stored PyTorch 2.10 trajectory:
+MSE was $0.00408$ and $0.00385$. Table~\ref{tab:rq1} therefore reports the
+stored notebook, not a bit-identical rerun of that L-BFGS path.
+The stored R-GAP baseline reports 57.1~s, compared with 532.355~s for
+Inverting Gradients on LeNet. R-GAP has no per-pixel optimization loop
+(Section~\ref{sec:rgap}), but still performs an iterative scalar solve at
+the output layer and constructs and solves convolutional linear systems
+on the CPU. Without separately instrumented stages and a common timing
+protocol for all attacks, these observations do not establish a general
+runtime ranking or which stage dominates R-GAP's runtime.
+
+\paragraph{Separate CPU verification.} A subsequent Python 3.12.12 CPU run
+measured 75.91~s for this baseline. A separately instrumented repeat took
+84.12~s, including 2.99~s for scalar Adam and 78.49~s for the four
+least-squares solves. These are not replacements for historical timings,
+but contradict attributing nearly all runtime to the scalar solve.
+Before casting the reconstructed image to float32, this repeat obtained
+MSE $2.72\times10^{-22}$ and PSNR 215.66~dB; the reported infinity arises
+after the float32 cast makes the measured error zero.
 
 Figure~\ref{fig:rq1-milestones} tracks how DLG and iDLG reach that final
 reconstruction: both start from the same random noise and converge toward
@@ -151,9 +179,9 @@ iterations of the same optimization run shown in Figure~\ref{fig:rq1}.}
 \label{fig:rq1-milestones}
 \end{figure}
 
-\paragraph{Numerical precision.} R-GAP's exactness is conditional on
-computing the entire attack in float64. Repeating the same attack in
-float32 (PyTorch's default) on identical weights and gradient yields
+\paragraph{Numerical precision.} In the historical run, repeating the attack in
+float32 (PyTorch's default), with identical weights but gradients recomputed
+in float32, yields
 MSE $=91.25$, PSNR $=-19.60$~dB -- pure noise. Figure~\ref{fig:rq1-float}
 localizes the failure: the float32 and float64 reconstructions agree
 closely through all four intermediate layers, and diverge only at the
@@ -163,6 +191,11 @@ system is small enough for float32 rounding error to be amplified into
 dominant noise. DLG and iDLG have no equivalent failure mode at this
 precision, since gradient descent is not solving an exact linear system at
 any step.
+
+The separate CPU verification instead reached 66.57~dB in the float32
+test and did not reproduce this collapse. The historical figure therefore
+illustrates a run-specific numerical failure, not proof that float32
+necessarily destroys the attack on this architecture.
 
 \begin{figure}[h]
 \centering
@@ -187,14 +220,21 @@ were introduced specifically to make this scale tractable; this section
 reports whether that design succeeds in practice, by the same MSE/PSNR
 metrics as RQ1.
 
-With 4 random restarts of 24{,}000 iterations each, the attack reaches
-MSE $=0.0185$, PSNR $=17.33$~dB. Figure~\ref{fig:rq2}
+With 4 random restarts of 24{,}000 iterations each, the stored run reaches
+a denormalized MSE of $0.0185$ and a peak-1 PSNR of $17.33$~dB
+(Section~\ref{sec:eval-metrics}). The GPU rerun of the same configuration
+gave denormalized MSE $0.01840$ and peak-1 PSNR $17.35$~dB. Figure~\ref{fig:rq2}
 shows the reconstruction is visibly identifiable (pose, fur color, collar
 pattern) despite the much larger parameter count and image resolution than
 RQ1's LeNet setting, confirming that the cosine cost and sign-based gradient update
 are sufficient to keep the attack tractable at this scale -- though at
 markedly lower fidelity than RQ1's Inverting Gradients result on the
 smaller LeNet (PSNR 26.48~dB; Section~\ref{sec:rq1}).
+The reconstruction box uses CIFAR-10 statistics while the input was normalized
+with ImageNet statistics. Projecting the beagle onto that box changes the true
+pixels by MSE $1.4\times10^{-4}$, about $39$~dB, so the mismatched box is not
+what limits the $17$~dB reconstruction. Denormalizing the ground truth itself
+with the CIFAR-10 constants changes the displayed image by MSE $0.00163$.
 
 \begin{figure}[h]
 \centering
@@ -237,7 +277,11 @@ Inverting Gradients (ResNet-18) & 17.33 dB & 16.35 dB \\
 Both optimization-based attacks lose roughly 11--12~dB going from batch 1
 to batch 2 on LeNet, while Inverting Gradients on ResNet-18 loses under
 1~dB -- its batch-1 result is already far from perfect at this scale
-(RQ2), leaving less margin left to lose. Figure~\ref{fig:rq3-ig-batch2}
+(RQ2), leaving less margin left to lose. The GPU rerun recovered the same
+DLG/iDLG label pair $[2,7]$ and a denormalized ResNet batch-2 PSNR of
+$16.33$~dB, against the stored $16.35$~dB. Its DLG and iDLG mean MSE values
+were $0.0273$ and $0.0253$, above the stored $0.0235$ and $0.0216$, the same
+L-BFGS discrepancy as in Section~\ref{sec:rq1}. Figure~\ref{fig:rq3-ig-batch2}
 shows both ResNet-18 batch-2 reconstructions remain individually
 identifiable.
 
@@ -298,7 +342,9 @@ $(A{+}B)/2$).}
 At batch size 1, R-GAP reconstructs this same architecture's input exactly
 (Section~\ref{sec:rq1}); at batch size 2 the CNN variant's reconstruction
 is uncorrelated with either image or their average ($|\cos|\approx0.06$ in
-Table~\ref{tab:rq3-rgap}), a sharper collapse than either optimization-based
+Table~\ref{tab:rq3-rgap}). A GPU rerun reproduced those cosines to four
+decimals: $0.0608$ for LeNetRGAP against the average, and $1.0000$ for FCN3.
+This is a sharper collapse than either optimization-based
 attack shows going from batch 1 to batch 2.
 
 \subsection{RQ4 -- Effectiveness of the DP-SGD Defense}
@@ -320,6 +366,16 @@ numerical perturbation would otherwise place every sampled $\sigma$ past its
 breaking point. Each configuration here also runs fewer optimization iterations
 than the undefended baselines of RQ1/RQ2, so the $\sigma=0$ row below is a
 lower-budget reference point, not directly comparable to those undefended numbers.
+
+For example, Inverting Gradients on LeNet reaches 27.94~dB in the
+zero-noise, no-clip sweep, versus 26.48~dB in RQ1. A paired GPU ablation
+kept the same weights, original gradient, and true label, and reseeded
+before every trial. With median filtering every 500 steps, 4{,}800
+iterations scored 27.85~dB and 24{,}000 iterations scored 26.36~dB.
+Without the filter those budgets scored 16.33~dB and 22.06~dB. The higher
+defense PSNR is the shorter median-filtered budget, not an improvement from
+clipping or noise. Median filtering raises PSNR relative to the unfiltered
+run; extending the filtered run from 4{,}800 to 24{,}000 steps lowers it.
 
 At the LeNet configuration shared by DLG/iDLG and Inverting Gradients, clipping
 alone already separates the two cost functions as Section~\ref{sec:inverting-gradients}
@@ -363,7 +419,7 @@ Inverting Gradients (bottom).}
 \end{figure}
 
 \paragraph{R-GAP under DP-SGD.} Table~\ref{tab:rq4-rgap} reports R-GAP's own,
-finer-grained sweep (LeNetRGAP, same image as RQ1). The attack is exact at
+finer-grained sweep (LeNetRGAP, same image as RQ1). In the no-clip row, the attack is exact at
 $\sigma=0$ and still reaches 31.0~dB at $\sigma=10^{-7}$, but collapses to
 $-19.5$~dB at $\sigma=10^{-6}$ -- just one order of magnitude more noise.
 This breaking point sits three to four orders of magnitude below iDLG's
@@ -374,6 +430,12 @@ exact recursive solve cannot average out perturbation the way gradient
 descent does across hundreds of steps -- giving DP-SGD a use it otherwise
 lacks: a noise level too small to touch the optimization-based attacks
 already defeats R-GAP outright.
+
+These breaking points describe the historical noise realizations, not
+universal thresholds. In the separate CPU sweep, nominal no clipping
+retained 14.66~dB at $\sigma=10^{-6}$, whereas half-norm clipping produced
+$-14.61$~dB there. Repeated, paired-noise trials are needed before
+attributing either ordering to clipping-induced numerical conditioning.
 
 \begin{table}[h]
 \centering
@@ -394,6 +456,10 @@ $10^{-3}$ remain collapsed at $-27.2$ and $-42.4$~dB).}
 \centering
 \includegraphics[width=\textwidth]{figures/rq4_rgap_grid.png}
 \caption{R-GAP reconstruction vs.\ DP-SGD noise, both clipping settings. The
-reconstruction collapses sharply between $\sigma=10^{-7}$ and $\sigma=10^{-6}$.}
+no-clip reconstruction collapses between $\sigma=10^{-7}$ and $\sigma=10^{-6}$,
+whereas half-norm clipping retains 12.82~dB at $\sigma=10^{-6}$. Clipping
+changes both the scalar inversion problem and the absolute noise scale
+($\sigma C$); independently drawn noise also differs between settings.
+This single sweep does not isolate an improvement in numerical conditioning.}
 \label{fig:rq4-rgap}
 \end{figure}

@@ -1,0 +1,41 @@
+{
+  "device": "cpu",
+  "python": "3.12.12",
+  "torch": "2.14.1+cu130",
+  "numpy": "2.5.2",
+  "cpu": "x86_64",
+  "torch_threads": 14,
+  "seed": 50,
+  "image_index": 17,
+  "baseline_seconds": 75.91426157951355,
+  "profile_seconds": 84.12465362799776,
+  "scalar_seconds": 2.9930452959997638,
+  "linear_lstsq_seconds": 78.48781694100035,
+  "other_seconds": 2.6437913909976487,
+  "float64_mse": 2.7159547788993995e-22,
+  "float64_psnr_db": 215.66077465406983,
+  "float32_cast_mse": 0.0,
+  "note": "Separate CPU verification; infinity represented as null. Other time includes matrix construction and recursive bookkeeping.",
+  "stages": [
+    {
+      "stage": "scalar_adam",
+      "seconds": 2.9930452959997638
+    },
+    {
+      "stage": "linear_lstsq",
+      "seconds": 11.861001401000976
+    },
+    {
+      "stage": "linear_lstsq",
+      "seconds": 7.408884211999975
+    },
+    {
+      "stage": "linear_lstsq",
+      "seconds": 36.584947331000876
+    },
+    {
+      "stage": "linear_lstsq",
+      "seconds": 22.63298399699852
+    }
+  ]
+}
