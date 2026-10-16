@@ -1,0 +1,37 @@
+{
+  "device": "cuda",
+  "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "arch": "ResNet18",
+  "trained_model": false,
+  "image": "n02088364_beagle.JPEG",
+  "imagenet_class": 162,
+  "input_normalize": "imagenet_mean/std",
+  "box_and_denorm": "cifar10_mean/std",
+  "attacker_label": "true label passed to the main reconstruct(); defense passes None and uses iDLG",
+  "main": {
+    "restarts": 4,
+    "max_iterations": 24000,
+    "seconds": 1683.06,
+    "team_grad_mean_norm": 3.300741,
+    "this_grad_mean_norm": 3.300884,
+    "team_global_l2": 53.9835,
+    "this_global_l2": 53.9949,
+    "notebook_mse_normalized": 0.30134466,
+    "notebook_psnr_factor_1_over_ds": 17.2304,
+    "pixel_mse_after_cifar_denorm": 0.01839937,
+    "pixel_psnr_peak1_after_cifar_denorm": 17.35197,
+    "report_mse": 0.0185,
+    "report_psnr": 17.33,
+    "note": "Report MSE/PSNR match peak-1 metrics after the notebook denorm, not the normalized MSE stored in test_mse."
+  },
+  "defense_psnr": [
+    {"C": 27.0, "sigma": 0.0, "this": 12.69, "team": 12.66},
+    {"C": 27.0, "sigma": 0.0001, "this": 12.14, "team": 12.18},
+    {"C": 27.0, "sigma": 0.001, "this": 9.75, "team": 9.71},
+    {"C": 27.0, "sigma": 0.01, "this": 9.35, "team": 9.40},
+    {"C": 54.0, "sigma": 0.0, "this": 12.69, "team": 12.72},
+    {"C": 54.0, "sigma": 0.0001, "this": 12.16, "team": 12.17},
+    {"C": 54.0, "sigma": 0.001, "this": 9.65, "team": 9.71},
+    {"C": 54.0, "sigma": 0.01, "this": 9.46, "team": 9.43}
+  ]
+}

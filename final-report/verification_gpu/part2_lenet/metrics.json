@@ -1,0 +1,36 @@
+{
+  "device": "cuda",
+  "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "seed": 50,
+  "img_index": 17,
+  "gt_label": 3,
+  "shared_with_part1": {
+    "weight_max_abs": 0.0,
+    "grad_max_abs": 8.94e-8,
+    "grad_l2": 29.445148
+  },
+  "main_attack_label": "true label passed to reconstruct()",
+  "defense_label": "labels=None, so iDLG argmin on the defended fc.weight gradient",
+  "main": {
+    "restarts": 2,
+    "max_iterations": 24000,
+    "filter": "median",
+    "team_mse": 0.0022,
+    "team_psnr": 26.48,
+    "team_fmse": 9.2923e-4,
+    "this_mse": 0.0023,
+    "this_psnr": 26.38,
+    "this_fmse": 7.8288e-4,
+    "this_seconds": 462.24
+  },
+  "defense_this_run": [
+    {"C": 14.7226, "sigma": 0.0, "psnr": 28.21, "mse": 0.0015, "team_psnr": 28.60},
+    {"C": 14.7226, "sigma": 1e-4, "psnr": 27.47, "mse": 0.0018, "team_psnr": 27.55},
+    {"C": 14.7226, "sigma": 1e-3, "psnr": 18.45, "mse": 0.0143, "team_psnr": 18.39},
+    {"C": 14.7226, "sigma": 1e-2, "psnr": 9.11, "mse": 0.1228, "team_psnr": 9.26},
+    {"C": 29.4451, "sigma": 0.0, "psnr": 28.06, "mse": 0.0016, "team_psnr": 27.94},
+    {"C": 29.4451, "sigma": 1e-4, "psnr": 27.06, "mse": 0.0020, "team_psnr": 27.32},
+    {"C": 29.4451, "sigma": 1e-3, "psnr": 17.74, "mse": 0.0168, "team_psnr": 17.34},
+    {"C": 29.4451, "sigma": 1e-2, "psnr": 10.65, "mse": 0.0862, "team_psnr": 10.75}
+  ]
+}

@@ -1,0 +1,113 @@
+
+===== CELL 2 =====
+2.14.1+cu130 0.29.1+cu130
+
+===== CELL 3 =====
+Running on cuda
+
+===== CELL 5 =====
+
+===== CELL 7 =====
+GT label is 3. 
+Onehot label is 3.
+
+===== CELL 9 =====
+Dummy label is 7.
+
+===== CELL 11 =====
+0 15.7576
+10 0.2996
+20 0.0463
+30 0.0140
+40 0.0069
+50 0.0041
+60 0.0030
+70 0.0023
+80 0.0019
+90 0.0016
+100 0.0014
+110 0.0012
+120 0.0011
+130 0.0009
+140 0.0008
+150 0.0008
+160 0.0007
+170 0.0006
+180 0.0006
+190 0.0005
+200 0.0005
+210 0.0005
+220 0.0004
+230 0.0004
+240 0.0004
+250 0.0004
+260 0.0004
+270 0.0003
+280 0.0003
+290 0.0003
+
+===== CELL 13 =====
+Dummy label is 3.
+
+===== CELL 15 =====
+iDLG label is 3. 
+GT label is 3.
+
+===== CELL 16 =====
+0 12.89599705
+10 0.31630248
+20 0.05068367
+30 0.01554572
+40 0.00700743
+50 0.00415735
+60 0.00272455
+70 0.00202656
+80 0.00162651
+90 0.00137025
+100 0.00116311
+110 0.00101430
+120 0.00089792
+130 0.00079448
+140 0.00071815
+150 0.00065378
+160 0.00060577
+170 0.00055694
+180 0.00052448
+190 0.00049169
+200 0.00045989
+210 0.00043189
+220 0.00040810
+230 0.00039042
+240 0.00036792
+250 0.00034572
+260 0.00045421
+270 0.00032949
+280 0.00031383
+290 0.00029739
+
+===== CELL 18 =====
+iDLG label is 3. | DLG label is 3. | GT label is 3.
+MSE to ground truth -> DLG: 0.00407522 | iDLG: 0.00384690
+
+===== CELL 19 =====
+part1.ipynb:cell19:7: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+
+===== CELL 21 =====
+Global L2 norm of the original gradient: 29.4451 | clip norms C: [14.7226, 29.4451]
+[ 1/8] C=14.7226, sigma=0.0 -> MSE 956847040.000000, PSNR -89.81 dB, label correct
+[ 2/8] C=14.7226, sigma=0.0001 -> MSE 24.771887, PSNR -13.94 dB, label correct
+[ 3/8] C=14.7226, sigma=0.001 -> MSE 472707264.000000, PSNR -86.75 dB, label correct
+[ 4/8] C=14.7226, sigma=0.01 -> MSE 350.631836, PSNR -25.45 dB, label correct
+[ 5/8] C=29.4451, sigma=0.0 -> MSE 0.033415, PSNR 14.76 dB, label correct
+[ 6/8] C=29.4451, sigma=0.0001 -> MSE 0.053395, PSNR 12.73 dB, label correct
+[ 7/8] C=29.4451, sigma=0.001 -> MSE 5.735028, PSNR -7.59 dB, label correct
+[ 8/8] C=29.4451, sigma=0.01 -> MSE 88.391037, PSNR -19.46 dB, label correct
+
+===== CELL 23 =====
+part1.ipynb:cell23:14: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+
+===== CELL 25 =====
+part1.ipynb:cell25:15: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+
+===== CELL 26 =====
+saved /home/khuong/workspace/Trustworthy_AI_Project/final-report/verification_gpu/part1/part1.npz

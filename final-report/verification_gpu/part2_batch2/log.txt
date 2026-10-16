@@ -1,0 +1,282 @@
+
+===== CELL 1 =====
+
+===== CELL 4 =====
+
+===== CELL 7 =====
+
+===== CELL 8 =====
+Currently evaluating -------------------------------:
+Friday, 16. October 2026 03:23PM
+CPUs: 14, GPUs: 1 on khuong-Dell-G15-5530.
+GPU : NVIDIA GeForce RTX 4060 Laptop GPU
+/home/khuong/.pyenv/versions/3.12.12/lib/python3.12/site-packages/torchvision/models/_utils.py:207: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/home/khuong/.pyenv/versions/3.12.12/lib/python3.12/site-packages/torchvision/models/_utils.py:222: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+
+===== CELL 10 =====
+
+===== CELL 13 =====
+[('beagle',), ('great grey owl',)]
+
+===== CELL 14 =====
+
+===== CELL 16 =====
+Full gradient norm is 2.184709e+00.
+
+===== CELL 18 =====
+It: 0. Rec. loss: 0.0597.
+It: 500. Rec. loss: 0.0303.
+It: 1000. Rec. loss: 0.0219.
+It: 1500. Rec. loss: 0.0208.
+It: 2000. Rec. loss: 0.0191.
+It: 2500. Rec. loss: 0.0188.
+It: 3000. Rec. loss: 0.0188.
+It: 3500. Rec. loss: 0.0166.
+It: 4000. Rec. loss: 0.0175.
+It: 4500. Rec. loss: 0.0177.
+It: 5000. Rec. loss: 0.0179.
+It: 5500. Rec. loss: 0.0164.
+It: 6000. Rec. loss: 0.0168.
+It: 6500. Rec. loss: 0.0168.
+It: 7000. Rec. loss: 0.0163.
+It: 7500. Rec. loss: 0.0179.
+It: 8000. Rec. loss: 0.0165.
+It: 8500. Rec. loss: 0.0161.
+It: 9000. Rec. loss: 0.0159.
+It: 9500. Rec. loss: 0.0145.
+It: 10000. Rec. loss: 0.0129.
+It: 10500. Rec. loss: 0.0107.
+It: 11000. Rec. loss: 0.0092.
+It: 11500. Rec. loss: 0.0088.
+It: 12000. Rec. loss: 0.0084.
+It: 12500. Rec. loss: 0.0082.
+It: 13000. Rec. loss: 0.0082.
+It: 13500. Rec. loss: 0.0080.
+It: 14000. Rec. loss: 0.0073.
+It: 14500. Rec. loss: 0.0078.
+It: 15000. Rec. loss: 0.0075.
+It: 15500. Rec. loss: 0.0067.
+It: 16000. Rec. loss: 0.0058.
+It: 16500. Rec. loss: 0.0056.
+It: 17000. Rec. loss: 0.0056.
+It: 17500. Rec. loss: 0.0055.
+It: 18000. Rec. loss: 0.0052.
+It: 18500. Rec. loss: 0.0054.
+It: 19000. Rec. loss: 0.0052.
+It: 19500. Rec. loss: 0.0053.
+It: 20000. Rec. loss: 0.0050.
+It: 20500. Rec. loss: 0.0049.
+It: 21000. Rec. loss: 0.0049.
+It: 21500. Rec. loss: 0.0047.
+It: 22000. Rec. loss: 0.0048.
+It: 22500. Rec. loss: 0.0046.
+It: 23000. Rec. loss: 0.0046.
+It: 23500. Rec. loss: 0.0047.
+It: 23999. Rec. loss: 0.0033.
+It: 0. Rec. loss: 0.0583.
+It: 500. Rec. loss: 0.0282.
+It: 1000. Rec. loss: 0.0221.
+It: 1500. Rec. loss: 0.0203.
+It: 2000. Rec. loss: 0.0202.
+It: 2500. Rec. loss: 0.0199.
+It: 3000. Rec. loss: 0.0174.
+It: 3500. Rec. loss: 0.0177.
+It: 4000. Rec. loss: 0.0181.
+It: 4500. Rec. loss: 0.0175.
+It: 5000. Rec. loss: 0.0163.
+It: 5500. Rec. loss: 0.0162.
+It: 6000. Rec. loss: 0.0169.
+It: 6500. Rec. loss: 0.0171.
+It: 7000. Rec. loss: 0.0161.
+It: 7500. Rec. loss: 0.0164.
+It: 8000. Rec. loss: 0.0167.
+It: 8500. Rec. loss: 0.0173.
+It: 9000. Rec. loss: 0.0167.
+It: 9500. Rec. loss: 0.0146.
+It: 10000. Rec. loss: 0.0117.
+It: 10500. Rec. loss: 0.0098.
+It: 11000. Rec. loss: 0.0096.
+It: 11500. Rec. loss: 0.0099.
+It: 12000. Rec. loss: 0.0086.
+It: 12500. Rec. loss: 0.0085.
+It: 13000. Rec. loss: 0.0083.
+It: 13500. Rec. loss: 0.0080.
+It: 14000. Rec. loss: 0.0074.
+It: 14500. Rec. loss: 0.0074.
+It: 15000. Rec. loss: 0.0072.
+It: 15500. Rec. loss: 0.0065.
+It: 16000. Rec. loss: 0.0058.
+It: 16500. Rec. loss: 0.0055.
+It: 17000. Rec. loss: 0.0054.
+It: 17500. Rec. loss: 0.0052.
+It: 18000. Rec. loss: 0.0050.
+It: 18500. Rec. loss: 0.0053.
+It: 19000. Rec. loss: 0.0050.
+It: 19500. Rec. loss: 0.0050.
+It: 20000. Rec. loss: 0.0049.
+It: 20500. Rec. loss: 0.0050.
+It: 21000. Rec. loss: 0.0050.
+It: 21500. Rec. loss: 0.0048.
+It: 22000. Rec. loss: 0.0047.
+It: 22500. Rec. loss: 0.0045.
+It: 23000. Rec. loss: 0.0045.
+It: 23500. Rec. loss: 0.0045.
+It: 23999. Rec. loss: 0.0029.
+Choosing optimal result ...
+Optimal result score: 0.0044
+Total time: 932.6754765510559.
+
+===== CELL 20 =====
+
+===== CELL 22 =====
+part2_batch2.ipynb:cell22:15: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+
+===== CELL 24 =====
+Global L2 norm of the original gradient: 35.5124 | clip norms C: [17.8, 35.5]
+
+[1/8] C=17.8, sigma=0.0
+It: 0. Rec. loss: 0.0611.
+It: 500. Rec. loss: 0.0287.
+It: 1000. Rec. loss: 0.0232.
+It: 1500. Rec. loss: 0.0213.
+It: 2000. Rec. loss: 0.0173.
+It: 2500. Rec. loss: 0.0161.
+It: 3000. Rec. loss: 0.0120.
+It: 3500. Rec. loss: 0.0105.
+It: 4000. Rec. loss: 0.0086.
+It: 4500. Rec. loss: 0.0082.
+It: 4799. Rec. loss: 0.0055.
+Choosing optimal result ...
+Optimal result score: 0.0055
+Total time: 107.23300504684448.
+   -> grad cos 1.000 | label correct | MSE 0.7864 | PSNR 13.17 dB | FMSE 2.257e-02
+
+[2/8] C=17.8, sigma=0.0001
+It: 0. Rec. loss: 0.1106.
+It: 500. Rec. loss: 0.0841.
+It: 1000. Rec. loss: 0.0773.
+It: 1500. Rec. loss: 0.0755.
+It: 2000. Rec. loss: 0.0732.
+It: 2500. Rec. loss: 0.0696.
+It: 3000. Rec. loss: 0.0670.
+It: 3500. Rec. loss: 0.0649.
+It: 4000. Rec. loss: 0.0636.
+It: 4500. Rec. loss: 0.0627.
+It: 4799. Rec. loss: 0.0601.
+Choosing optimal result ...
+Optimal result score: 0.0601
+Total time: 85.57327890396118.
+   -> grad cos 0.946 | label correct | MSE 0.8999 | PSNR 12.61 dB | FMSE 3.233e-02
+
+[3/8] C=17.8, sigma=0.001
+It: 0. Rec. loss: 0.7391.
+It: 500. Rec. loss: 0.7296.
+It: 1000. Rec. loss: 0.7301.
+It: 1500. Rec. loss: 0.7292.
+It: 2000. Rec. loss: 0.7285.
+It: 2500. Rec. loss: 0.7272.
+It: 3000. Rec. loss: 0.7269.
+It: 3500. Rec. loss: 0.7264.
+It: 4000. Rec. loss: 0.7257.
+It: 4500. Rec. loss: 0.7255.
+It: 4799. Rec. loss: 0.7231.
+Choosing optimal result ...
+Optimal result score: 0.7231
+Total time: 79.11718916893005.
+   -> grad cos 0.281 | label correct | MSE 1.4393 | PSNR 10.57 dB | FMSE 9.593e-02
+
+[4/8] C=17.8, sigma=0.01
+It: 0. Rec. loss: 0.9725.
+It: 500. Rec. loss: 0.9716.
+It: 1000. Rec. loss: 0.9716.
+It: 1500. Rec. loss: 0.9715.
+It: 2000. Rec. loss: 0.9716.
+It: 2500. Rec. loss: 0.9712.
+It: 3000. Rec. loss: 0.9712.
+It: 3500. Rec. loss: 0.9709.
+It: 4000. Rec. loss: 0.9708.
+It: 4500. Rec. loss: 0.9706.
+It: 4799. Rec. loss: 0.9691.
+Choosing optimal result ...
+Optimal result score: 0.9691
+Total time: 88.0365777015686.
+   -> grad cos 0.029 | label correct | MSE 1.4499 | PSNR 10.57 dB | FMSE 2.619e-01
+
+[5/8] C=35.5, sigma=0.0
+It: 0. Rec. loss: 0.0610.
+It: 500. Rec. loss: 0.0312.
+It: 1000. Rec. loss: 0.0232.
+It: 1500. Rec. loss: 0.0207.
+It: 2000. Rec. loss: 0.0195.
+It: 2500. Rec. loss: 0.0144.
+It: 3000. Rec. loss: 0.0121.
+It: 3500. Rec. loss: 0.0095.
+It: 4000. Rec. loss: 0.0090.
+It: 4500. Rec. loss: 0.0082.
+It: 4799. Rec. loss: 0.0054.
+Choosing optimal result ...
+Optimal result score: 0.0053
+Total time: 92.91815638542175.
+   -> grad cos 1.000 | label correct | MSE 0.7711 | PSNR 13.25 dB | FMSE 2.557e-02
+
+[6/8] C=35.5, sigma=0.0001
+It: 0. Rec. loss: 0.1119.
+It: 500. Rec. loss: 0.0819.
+It: 1000. Rec. loss: 0.0771.
+It: 1500. Rec. loss: 0.0753.
+It: 2000. Rec. loss: 0.0723.
+It: 2500. Rec. loss: 0.0696.
+It: 3000. Rec. loss: 0.0664.
+It: 3500. Rec. loss: 0.0648.
+It: 4000. Rec. loss: 0.0632.
+It: 4500. Rec. loss: 0.0621.
+It: 4799. Rec. loss: 0.0595.
+Choosing optimal result ...
+Optimal result score: 0.0595
+Total time: 102.08018589019775.
+   -> grad cos 0.946 | label correct | MSE 0.8975 | PSNR 12.62 dB | FMSE 2.991e-02
+
+[7/8] C=35.5, sigma=0.001
+It: 0. Rec. loss: 0.7382.
+It: 500. Rec. loss: 0.7299.
+It: 1000. Rec. loss: 0.7298.
+It: 1500. Rec. loss: 0.7299.
+It: 2000. Rec. loss: 0.7294.
+It: 2500. Rec. loss: 0.7282.
+It: 3000. Rec. loss: 0.7271.
+It: 3500. Rec. loss: 0.7262.
+It: 4000. Rec. loss: 0.7260.
+It: 4500. Rec. loss: 0.7254.
+It: 4799. Rec. loss: 0.7237.
+Choosing optimal result ...
+Optimal result score: 0.7236
+Total time: 94.80604553222656.
+   -> grad cos 0.280 | label correct | MSE 1.4359 | PSNR 10.59 dB | FMSE 9.384e-02
+
+[8/8] C=35.5, sigma=0.01
+It: 0. Rec. loss: 0.9720.
+It: 500. Rec. loss: 0.9713.
+It: 1000. Rec. loss: 0.9712.
+It: 1500. Rec. loss: 0.9711.
+It: 2000. Rec. loss: 0.9710.
+It: 2500. Rec. loss: 0.9708.
+It: 3000. Rec. loss: 0.9707.
+It: 3500. Rec. loss: 0.9705.
+It: 4000. Rec. loss: 0.9703.
+It: 4500. Rec. loss: 0.9701.
+It: 4799. Rec. loss: 0.9687.
+Choosing optimal result ...
+Optimal result score: 0.9687
+Total time: 110.43698954582214.
+   -> grad cos 0.030 | label correct | MSE 1.4471 | PSNR 10.56 dB | FMSE 2.704e-01
+
+===== CELL 26 =====
+part2_batch2.ipynb:cell26:13: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+
+===== CELL 28 =====
+part2_batch2.ipynb:cell28:14: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+
+===== CELL 29 =====
+saved /home/khuong/workspace/Trustworthy_AI_Project/final-report/verification_gpu/part2_batch2/part2_batch2.npz

@@ -1,0 +1,14 @@
+{
+  "same_image_max_abs": 0.0,
+  "gt_label": 3,
+  "labels_equal": true,
+  "weight_max_abs": 0.0,
+  "grad_max_abs": 8.940696716308594e-08,
+  "part1_loss": 6.857884883880615,
+  "part2_loss": 6.857884883880615,
+  "part1_grad_l2": 29.445148468017578,
+  "part2_grad_l2": 29.445148468017578,
+  "part1_idlg_label": 3,
+  "part2_main_attack_receives_true_label": true,
+  "part2_defense_passes_labels_None_so_idlg": true
+}

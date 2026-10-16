@@ -1,0 +1,48 @@
+{
+  "python": "3.12.12",
+  "torch": "2.14.1+cu130",
+  "device": "cuda",
+  "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "seed": 50,
+  "img_index": 17,
+  "gt_label": 3,
+  "attacker_knows_label": false,
+  "dlg_optimizer": "LBFGS default lr, 300 steps, joint image and label",
+  "idlg_optimizer": "LBFGS lr=1.0, 300 steps, label from argmin of fc.weight gradient",
+  "defense_iters": 50,
+  "team": {
+    "torch": "2.10.0+cu128",
+    "device": "cuda",
+    "gt_label": 3,
+    "dummy_label_init": 7,
+    "dlg_label": 3,
+    "idlg_label": 3,
+    "mse_dlg": 0.00139714,
+    "mse_idlg": 0.00160358,
+    "grad_l2": 29.4434,
+    "defense_psnr_half_clip_sigma0": -104.90,
+    "defense_psnr_noclip_sigma0": 16.14
+  },
+  "this_run": {
+    "dummy_label_init": 7,
+    "dlg_label": 3,
+    "idlg_label": 3,
+    "mse_dlg": 0.00407522,
+    "mse_idlg": 0.00384690,
+    "grad_l2": 29.4451,
+    "idlg_match_loss_iter0": 12.89599705,
+    "idlg_match_loss_iter290": 0.00029739,
+    "team_idlg_match_loss_iter0": 12.13683319,
+    "team_idlg_match_loss_iter290": 0.00009755,
+    "defense": [
+      {"C": 14.7226, "sigma": 0.0, "mse": 956847040.0, "psnr": -89.81, "label_correct": true},
+      {"C": 14.7226, "sigma": 0.0001, "mse": 24.771887, "psnr": -13.94, "label_correct": true},
+      {"C": 14.7226, "sigma": 0.001, "mse": 472707264.0, "psnr": -86.75, "label_correct": true},
+      {"C": 14.7226, "sigma": 0.01, "mse": 350.631836, "psnr": -25.45, "label_correct": true},
+      {"C": 29.4451, "sigma": 0.0, "mse": 0.033415, "psnr": 14.76, "label_correct": true},
+      {"C": 29.4451, "sigma": 0.0001, "mse": 0.053395, "psnr": 12.73, "label_correct": true},
+      {"C": 29.4451, "sigma": 0.001, "mse": 5.735028, "psnr": -7.59, "label_correct": true},
+      {"C": 29.4451, "sigma": 0.01, "mse": 88.391037, "psnr": -19.46, "label_correct": true}
+    ]
+  }
+}

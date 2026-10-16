@@ -1,0 +1,67 @@
+{
+  "input_normalize": "imagenet",
+  "recon_dm_ds": "cifar10",
+  "imagenet_mean": [
+    0.48500001430511475,
+    0.4560000002384186,
+    0.4059999883174896
+  ],
+  "imagenet_std": [
+    0.2290000021457672,
+    0.2240000069141388,
+    0.22499999403953552
+  ],
+  "cifar10_mean": [
+    0.4914672374725342,
+    0.4822617471218109,
+    0.4467701315879822
+  ],
+  "cifar10_std": [
+    0.24703224003314972,
+    0.24348513782024384,
+    0.26158785820007324
+  ],
+  "mean_abs_diff": [
+    0.006467223167419434,
+    0.026261746883392334,
+    0.040770143270492554
+  ],
+  "std_abs_diff": [
+    0.018032237887382507,
+    0.01948513090610504,
+    0.03658786416053772
+  ],
+  "box_cifar": {
+    "low": [
+      -1.9894862174987793,
+      -1.9806619882583618,
+      -1.7079161405563354
+    ],
+    "high": [
+      2.0585684776306152,
+      2.1263647079467773,
+      2.114891290664673
+    ]
+  },
+  "box_imagenet": {
+    "low": [
+      -2.1179039478302,
+      -2.0357141494750977,
+      -1.804444432258606
+    ],
+    "high": [
+      2.248908281326294,
+      2.4285714626312256,
+      2.640000104904175
+    ]
+  },
+  "ground_truth_denorm_mse_cifar_vs_imagenet": 0.0016307794721797109,
+  "ground_truth_denorm_max_abs": 0.11764705181121826,
+  "fraction_of_pixels_clipped_by_cifar_denorm": 0.08013126999139786,
+  "synthetic_normalized_mse": 0.002499997615814209,
+  "notebook_psnr_with_cifar_factor": 38.04164505004883,
+  "notebook_psnr_with_imagenet_factor": 38.9388313293457,
+  "pixel_psnr_if_denorm_cifar": 38.383724212646484,
+  "pixel_psnr_if_denorm_imagenet": 38.9708137512207,
+  "formula_note": "inversefed.metrics.psnr averages 10*log10((1/std_c)^2 / MSE) over channels. MSE is the normalized-tensor MSE, so this is not 10*log10(1/MSE_pixel)."
+}
